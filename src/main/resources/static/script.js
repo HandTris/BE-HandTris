@@ -1,6 +1,7 @@
 let socket = new SockJS('/tetris');
 let stompClient = Stomp.over(socket);
 let connected = false;
+// let sessionId = null;
 
 document.addEventListener('DOMContentLoaded', function () {
     const videoElement = document.getElementById('video');
@@ -185,13 +186,7 @@ document.addEventListener('DOMContentLoaded', function () {
         }
         return false;
     }
-    // create the board(초기 보드 만들어진 거)
-    function sendTetrisMessage(board) {
-        let message = {
-            board: board
-        };
-        stompClient.send("/app/tetris", {}, JSON.stringify(message));
-    }
+
     
     let board = [];
     for (let r = 0; r < ROW; r++) {
@@ -448,7 +443,8 @@ document.addEventListener('DOMContentLoaded', function () {
     function sendTetrisMessage(board) {
         if (connected) {
             let message = {
-                board: board
+                board: board,
+                // sessionId: sessionId        // 메시지에 세션 ID 포함
             };
             stompClient.send("/app/tetris", {}, JSON.stringify(message));
         } else {
@@ -461,9 +457,13 @@ document.addEventListener('DOMContentLoaded', function () {
         console.log('Connected: ' + frame);
         connected = true;
 
+        // sessionId 부분 추가
+        // sessionId = /\/([^\/]+)\/websocket/.exec(socket._transport.url)[1];
+        // console.log('Session ID: ' + sessionId);
+
         stompClient.subscribe('/topic/tetris', function (message) {
             let tetrisMessage = JSON.parse(message.body);
-            console.log(tetrisMessage);  // Received message logging
+            // console.log(tetrisMessage);  // Received message logging
             drawBoard2(tetrisMessage.board);
         });
 
@@ -488,6 +488,5 @@ document.addEventListener('DOMContentLoaded', function () {
             dropStart = Date.now();
         }
         sendTetrisMessage(board);  // 키 이벤트 시 보드 상태 전송
-        
     }
 });
