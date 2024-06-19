@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Tetris WebSocket</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/sockjs-client/1.5.0/sockjs.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"></script>
+</head>
+<body>
+<canvas id="tetrisCanvas1" width="320" height="640" style="border:1px solid #000000;"></canvas>
+<canvas id="tetrisCanvas2" width="320" height="640" style="border:1px solid #000000;"></canvas>
+<script>
+    let socket = new SockJS('/tetris');
+    let stompClient = Stomp.over(socket);
+
+    stompClient.connect({}, function (frame) {
+        console.log('Connected: ' + frame);
+        stompClient.subscribe('/topic/tetris', function (message) {
+            let tetrisMessage = JSON.parse(message.body);
+            console.log(tetrisMessage);  // Received message logging
+            drawBlock(tetrisMessage.coordinates, tetrisMessage.color, 'tetrisCanvas2');
+        });
+    });
+
+    function sendTetrisMessage(coordinates, color) {
+        let message = {
+            coordinates: coordinates,
+            color: color
+        };
+        stompClient.send("/app/tetris", {}, JSON.stringify(message));
+    }
+
+    function drawBlock(coordinates, color, canvasId) {
+        let canvas = document.getElementById(canvasId);
+        let context = canvas.getContext('2d');
+        context.clearRect(0, 0, canvas.width, canvas.height); // Clear the canvas before drawing
+        context.fillStyle = color;
+        coordinates.forEach(coord => {
+            context.fillRect(coord[0] * 32, coord[1] * 32, 32, 32);
+        });
+    }
+
+    // Drawing on the first canvas and sending data to the server
+    setInterval(() => {
+        let coordinates = [
+            [Math.floor(Math.random() * 10), Math.floor(Math.random() * 20)],
+            [Math.floor(Math.random() * 10), Math.floor(Math.random() * 20)],
+            [Math.floor(Math.random() * 10), Math.floor(Math.random() * 20)],
+            [Math.floor(Math.random() * 10), Math.floor(Math.random() * 20)]
+        ];
+        let colors = ["red", "green", "blue", "yellow", "purple", "cyan", "orange"];
+        let color = colors[Math.floor(Math.random() * colors.length)];
+        drawBlock(coordinates, color, 'tetrisCanvas1');
+        sendTetrisMessage(coordinates, color);
+    }, 1000);
+</script>
+</body>
+</html>
