@@ -17,8 +17,5 @@ public class Member {
 
     @Column(nullable = false, unique = true)
     private String nickname;
-
-    @OneToOne(mappedBy = "statistics")
-    private Statistics statistics;
-
+    
 }

@@ -8,16 +8,14 @@ import java.util.UUID;
 public class Game {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
-    
-    @Column(nullable = false)
-    private String gameCategory;
+    private long id;
 
     @Column(nullable = false)
+    private GameCategory gameCategory;
+
     private long participantCount;
-
-    @Column(nullable = false)
-    private long participant_limit;
+    
+    private long participantLimit;
 
     @Column(nullable = false)
     private UUID uuid;

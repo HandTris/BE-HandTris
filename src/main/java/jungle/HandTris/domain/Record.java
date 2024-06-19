@@ -6,14 +6,15 @@ import java.math.BigDecimal;
 import java.time.LocalTime;
 
 @Entity
-public class Statistics {
+public class Record {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-    @Column(nullable = false, unique = true)
-    private String nickname;
+    @OneToOne
+    @JoinColumn(name = "nickname", referencedColumnName = "nickname")
+    private Member member;
 
     private long victory;
 
