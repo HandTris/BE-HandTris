@@ -1,3 +1,7 @@
+let socket = new SockJS('/tetris');
+let stompClient = Stomp.over(socket);
+let connected = false;
+
 document.addEventListener('DOMContentLoaded', function () {
     const videoElement = document.getElementById('video');
     const canvasElement = document.getElementById('canvas');
@@ -126,8 +130,69 @@ document.addEventListener('DOMContentLoaded', function () {
         ctxTetris.strokeStyle = "BLACK";
         ctxTetris.strokeRect(x * SQ, y * SQ, SQ, SQ);
     }
+    Piece.prototype.lock = function() {
+        for (let r = 0; r < this.activeTetromino.length; r++) {
+            for (let c = 0; c < this.activeTetromino[r].length; c++) {
+                if (!this.activeTetromino[r][c]) {
+                    continue;
+                }
+                if (this.y + r < 0) {
+                    alert("Game Over");
+                    gameOver = true;
+                    break;
+                }
+                board[this.y + r][this.x + c] = this.color;
+            }
+        }
+        for (let r = 0; r < ROW; r++) {
+            let isRowFull = true;
+            for (let c = 0; c < COL; c++) {
+                isRowFull = isRowFull && (board[r][c] != VACANT);
+            }
+            if (isRowFull) {
+                for (let y = r; y > 1; y--) {
+                    for (let c = 0; c < COL; c++) {
+                        board[y][c] = board[y - 1][c];
+                    }
+                }
+                for (let c = 0; c < COL; c++) {
+                    board[0][c] = VACANT;
+                }
+            }
+        }
+        drawBoard();
+    }
 
+    Piece.prototype.collision = function(x, y, piece) {
+        for (let r = 0; r < piece.length; r++) {
+            for (let c = 0; c < piece[r].length; c++) {
+                if (!piece[r][c]) {
+                    continue;
+                }
+                let newX = this.x + c + x;
+                let newY = this.y + r + y;
+
+                if (newX < 0 || newX >= COL || newY >= ROW) {
+                    return true;
+                }
+                if (newY < 0) {
+                    continue;
+                }
+                if (board[newY][newX] != VACANT) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
     // create the board(초기 보드 만들어진 거)
+    function sendTetrisMessage(board) {
+        let message = {
+            board: board
+        };
+        stompClient.send("/app/tetris", {}, JSON.stringify(message));
+    }
+    
     let board = [];
     for (let r = 0; r < ROW; r++) {
         board[r] = [];
@@ -263,7 +328,6 @@ document.addEventListener('DOMContentLoaded', function () {
     Piece.prototype.fill = function(color) {
         for (let r = 0; r < this.activeTetromino.length; r++) {
             for (let c = 0; c < this.activeTetromino[r].length; c++) {
-                console.log(this.activeTetromino)
                 if (this.activeTetromino[r][c]) {
                     drawSquare(this.x + c, this.y + r, color);
                 }
@@ -352,6 +416,7 @@ document.addEventListener('DOMContentLoaded', function () {
         if (delta > 200) {
             p.moveDown();
             dropStart = Date.now();
+            sendTetrisMessage(board);  // 주기적으로 보드 상태 전송
         }
         if (!gameOver) {
             requestAnimationFrame(drop);
@@ -359,7 +424,6 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     drop();
-    sendTetrisMessage(board)
 
     function drawSquare2(x, y, color) {
         let gradient = ctxTetris2.createLinearGradient(x * SQ, y * SQ, x * SQ + SQ, y * SQ + SQ);
@@ -380,73 +444,33 @@ document.addEventListener('DOMContentLoaded', function () {
             }
         }
     }
+    // 메시지 전송 함수
+    function sendTetrisMessage(board) {
+        if (connected) {
+            let message = {
+                board: board
+            };
+            stompClient.send("/app/tetris", {}, JSON.stringify(message));
+        } else {
+            console.log("WebSocket connection is not established yet.");
+        }
+    }
 
+    // WebSocket 연결
     stompClient.connect({}, function (frame) {
         console.log('Connected: ' + frame);
+        connected = true;
+
         stompClient.subscribe('/topic/tetris', function (message) {
             let tetrisMessage = JSON.parse(message.body);
             console.log(tetrisMessage);  // Received message logging
-            // drawBlock(tetrisMessage.coordinates, tetrisMessage.color, 'tetrisCanvas2');
-            drawBoard2(tetrisMessage.board)
+            drawBoard2(tetrisMessage.board);
         });
+
+        // WebSocket 연결 후에만 메시지 전송
+        sendTetrisMessage(board);
     });
-
-    Piece.prototype.lock = function() {
-        for (let r = 0; r < this.activeTetromino.length; r++) {
-            for (let c = 0; c < this.activeTetromino[r].length; c++) {
-                if (!this.activeTetromino[r][c]) {
-                    continue;
-                }
-                if (this.y + r < 0) {
-                    alert("Game Over");
-                    gameOver = true;
-                    break;
-                }
-                board[this.y + r][this.x + c] = this.color;
-            }
-        }
-        for (let r = 0; r < ROW; r++) {
-            let isRowFull = true;
-            for (let c = 0; c < COL; c++) {
-                isRowFull = isRowFull && (board[r][c] != VACANT);
-            }
-            if (isRowFull) {
-                for (let y = r; y > 1; y--) {
-                    for (let c = 0; c < COL; c++) {
-                        board[y][c] = board[y - 1][c];
-                    }
-                }
-                for (let c = 0; c < COL; c++) {
-                    board[0][c] = VACANT;
-                }
-            }
-        }
-        drawBoard();
-    }
-
-    Piece.prototype.collision = function(x, y, piece) {
-        for (let r = 0; r < piece.length; r++) {
-            for (let c = 0; c < piece[r].length; c++) {
-                if (!piece[r][c]) {
-                    continue;
-                }
-                let newX = this.x + c + x;
-                let newY = this.y + r + y;
-
-                if (newX < 0 || newX >= COL || newY >= ROW) {
-                    return true;
-                }
-                if (newY < 0) {
-                    continue;
-                }
-                if (board[newY][newX] != VACANT) {
-                    return true;
-                }
-            }
-        }
-        return false;
-    }
-
+    
     document.addEventListener("keydown", CONTROL);
 
     function CONTROL(event) {
@@ -463,15 +487,7 @@ document.addEventListener('DOMContentLoaded', function () {
             p.moveDown();
             dropStart = Date.now();
         }
-    }
-    
-    function sendTetrisMessage(board) {
-        let message = {
-            board: board
-        };
-        stompClient.send("/app/tetris", {}, JSON.stringify(message));
+        sendTetrisMessage(board);  // 키 이벤트 시 보드 상태 전송
+        
     }
 });
-
-let socket = new SockJS('/tetris');
-let stompClient = Stomp.over(socket);
