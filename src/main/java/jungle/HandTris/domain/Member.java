@@ -2,8 +2,10 @@ package jungle.HandTris.domain;
 
 
 import jakarta.persistence.*;
+import lombok.Getter;
 
 @Entity
+@Getter
 public class Member {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -17,5 +19,4 @@ public class Member {
 
     @Column(nullable = false, unique = true)
     private String nickname;
-    
 }
