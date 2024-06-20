@@ -6,17 +6,17 @@ import java.math.BigDecimal;
 import java.time.LocalTime;
 
 @Entity
-public class Record {
+public class MemberRecord {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
     @OneToOne
-    @JoinColumn(name = "nickname", referencedColumnName = "nickname")
+    @JoinColumn(name = "nickname", referencedColumnName = "nickname", nullable = false)
     private Member member;
 
-    private long victory;
+    private long win;
 
     private long lose;
 
