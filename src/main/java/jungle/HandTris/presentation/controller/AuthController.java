@@ -1,6 +1,7 @@
 package jungle.HandTris.presentation.controller;
 
 import jungle.HandTris.application.service.MemberService;
+import jungle.HandTris.global.dto.ResponseEnvelope;
 import jungle.HandTris.presentation.dto.request.MemberRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -17,16 +18,16 @@ public class AuthController {
     private final MemberService memberService;
 
     @PostMapping("/signup")
-    public ResponseEntity<String> signup(@RequestBody MemberRequest memberRequest) {
+    public ResponseEnvelope<String> signup(@RequestBody MemberRequest memberRequest) {
         memberService.signup(memberRequest);
 
-        return ResponseEntity.ok("Signup Successful");
+        return ResponseEnvelope.of("Signup Successful");
     }
 
     @PostMapping("/signin")
-    public ResponseEntity<String> signin(@RequestBody MemberRequest memberRequest) {
+    public ResponseEnvelope<String> signin(@RequestBody MemberRequest memberRequest) {
         memberService.signin(memberRequest);
 
-        return ResponseEntity.ok("Login Successful");
+        return ResponseEnvelope.of("Login Successful");
     }
 }
