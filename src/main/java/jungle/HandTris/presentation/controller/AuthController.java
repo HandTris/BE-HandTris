@@ -16,6 +16,13 @@ public class AuthController {
 
     private final MemberService memberService;
 
+    @PostMapping("/signup")
+    public ResponseEntity<String> signup(@RequestBody MemberRequest memberRequest) {
+        memberService.signup(memberRequest);
+
+        return ResponseEntity.ok("Signup Successful");
+    }
+
     @PostMapping("/signin")
     public ResponseEntity<String> signin(@RequestBody MemberRequest memberRequest) {
         memberService.signin(memberRequest);
