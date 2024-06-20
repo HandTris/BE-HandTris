@@ -1,12 +1,6 @@
 package jungle.HandTris.presentation.dto.request;
 
-import lombok.Getter;
-import lombok.Setter;
+public record MemberRequest(String username, String password, String nickname) {
 
-@Getter
-@Setter
-public class MemberRequest {
-    private String username;
-    private String password;
-    private String nickname;
 }
+
