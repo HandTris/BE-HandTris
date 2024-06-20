@@ -1,10 +1,13 @@
 package jungle.HandTris.domain.exception;
 
-import lombok.NoArgsConstructor;
+import jungle.HandTris.global.exception.ErrorCode;
 
-@NoArgsConstructor
 public class CustomException extends RuntimeException {
-    public CustomException(String message) {
-        super(message);
+
+    private ErrorCode errorCode;
+
+    public CustomException(ErrorCode errorCode) {
+        super(errorCode.getMessage());
+        this.errorCode = errorCode;
     }
 }

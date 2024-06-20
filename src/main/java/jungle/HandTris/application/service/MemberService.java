@@ -3,6 +3,7 @@ package jungle.HandTris.application.service;
 import jungle.HandTris.domain.Member;
 import jungle.HandTris.domain.exception.CustomException;
 import jungle.HandTris.domain.repo.MemberRepository;
+import jungle.HandTris.global.exception.ErrorCode;
 import jungle.HandTris.presentation.dto.request.MemberRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -24,7 +25,7 @@ public class MemberService {
 
         // 비밀번호 확인
         if (!bCryptPasswordEncoder.matches(password, member.getPassword())) {
-            throw new CustomException("비밀번호가 일치하지 않습니다.");
+            throw new CustomException(ErrorCode.INVALID_CREDENTIALS);
         }
     }
 
@@ -34,11 +35,11 @@ public class MemberService {
         boolean isNickname = memberRepository.existsByNickname(memberRequest.nickname());
 
         if (isNickname) {
-            throw new CustomException("이미 존재하는 닉네임 입니다.");
+            throw new CustomException(ErrorCode.DUPLICATE_NICKNAME);
         }
 
         if (isUsername) {
-            throw new CustomException("이미 존재하는 ID 입니다.");
+            throw new CustomException(ErrorCode.DUPLICATE_USERNAME);
         }
 
         String username = memberRequest.username();
