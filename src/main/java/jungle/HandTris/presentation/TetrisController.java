@@ -1,4 +1,4 @@
-package jungle.HandTris.presentation.controller;
+package jungle.HandTris.presentation;
 
 import jungle.HandTris.presentation.dto.request.TetrisMessageRequest;
 import jungle.HandTris.application.service.TetrisService;
@@ -16,7 +16,6 @@ public class TetrisController {
     @MessageMapping("/tetris")
     @SendTo("/topic/tetris")
     public TetrisMessageRequest handleTetrisMessage(TetrisMessageRequest message) {
-        tetrisService.broadcastTetrisMessage(message);
         return message;
     }
 }
