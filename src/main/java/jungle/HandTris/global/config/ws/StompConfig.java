@@ -21,6 +21,6 @@ public class StompConfig implements WebSocketMessageBrokerConfigurer {
     @Override
     public void registerStompEndpoints(StompEndpointRegistry registry) {
         // WebSocket 엔드포인트를 등록하고 SockJS를 활성화합니다.
-        registry.addEndpoint("/tetris").withSockJS();
+        registry.addEndpoint("/tetris").setAllowedOriginPatterns("*").withSockJS();
     }
 }
