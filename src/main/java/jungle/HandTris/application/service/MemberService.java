@@ -22,7 +22,7 @@ public class MemberService {
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
     @Transactional
-    public void signin (MemberRequest memberRequest) {
+    public Long signin (MemberRequest memberRequest) {
         String username = memberRequest.username();
         String password = memberRequest.password();
 
@@ -33,6 +33,8 @@ public class MemberService {
         if (!bCryptPasswordEncoder.matches(password, member.getPassword())) {
             throw new PasswordMismatchException();
         }
+
+        return member.getId();
     }
 
     @Transactional
