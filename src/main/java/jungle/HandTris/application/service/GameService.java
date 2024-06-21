@@ -36,22 +36,14 @@ public class GameService {
     }
 
     public Game enterGame(long gameId) {
-        Game game = gameRepository.findById(gameId).orElse(null);
-
-        if (game == null)
-            throw new GameNotFoundException();
-
+        Game game = gameRepository.findById(gameId).orElseThrow(GameNotFoundException::new);
         game.enter();
         gameRepository.save(game);
         return game;
     }
 
     public Game exitGame(long gameId) {
-        Game game = gameRepository.findById(gameId).orElse(null);
-
-        if (game == null)
-            throw new GameNotFoundException();
-
+        Game game = gameRepository.findById(gameId).orElseThrow(GameNotFoundException::new);
         game.exit();
         if (game.getParticipantCount() == 0) {
             deleteGame(gameId);
@@ -62,10 +54,7 @@ public class GameService {
     }
 
     public void deleteGame(long gameId) {
-
-        if (!gameRepository.existsById(gameId))
-            throw new GameNotFoundException();
-
+        Game game = gameRepository.findById(gameId).orElseThrow(GameNotFoundException::new);
         gameRepository.deleteById(gameId);
     }
 }
