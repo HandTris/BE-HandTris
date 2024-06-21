@@ -17,8 +17,8 @@ public class MemberRecordController {
 
     private final MemberRecordService memberRecordService;
 
-    @GetMapping("/{memberNickname}")
-    public ResponseEnvelope<MemberRecordDetailRes> getMemberRecord(@PathVariable("memberNickname") String memberNickname) {
+    @GetMapping("/{nickname}")
+    public ResponseEnvelope<MemberRecordDetailRes> getMemberRecord(@PathVariable("nickname") String memberNickname) {
         MemberRecord memberRecord = memberRecordService.getMemberRecord(memberNickname);
         MemberRecordDetailRes memberRecordDetailRes = new MemberRecordDetailRes(memberRecord);
         return new ResponseEnvelope<>("200", memberRecordDetailRes, "성공입니다.");

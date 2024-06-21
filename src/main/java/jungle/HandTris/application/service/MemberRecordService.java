@@ -20,9 +20,9 @@ public class MemberRecordService {
     private final MemberRecordRepository memberRecordRepository;
     private final MemberRepository memberRepository;
 
-    public MemberRecord getMemberRecord(String memberNickname) {
+    public MemberRecord getMemberRecord(String nickname) {
 
-        Optional<Member> member = memberRepository.findByNickname(memberNickname);
+        Optional<Member> member = memberRepository.findByNickname(nickname);
         if (member.isEmpty()) {
             throw new MemberNotFoundException();
         }
