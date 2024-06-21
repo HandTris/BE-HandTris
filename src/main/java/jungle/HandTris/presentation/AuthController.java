@@ -1,4 +1,4 @@
-package jungle.HandTris.presentation.controller;
+package jungle.HandTris.presentation;
 
 import jakarta.validation.Valid;
 import jungle.HandTris.application.service.MemberService;
