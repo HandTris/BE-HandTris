@@ -21,8 +21,7 @@ public class GameController {
 
     @GetMapping
     public ResponseEnvelope<List<GameDetailRes>> getGameList() {
-        List<Game> gameList = gameService.getGameList();
-        List<GameDetailRes> gameDetailResList = gameList.stream().map(game -> new GameDetailRes(game)).toList();
+        List<GameDetailRes> gameDetailResList = gameService.getGameList().stream().map(GameDetailRes::new).toList();
         ResponseEnvelope<List<GameDetailRes>> result = new ResponseEnvelope<>("200", gameDetailResList, "성공입니다.");
         return result;
     }
