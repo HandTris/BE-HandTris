@@ -1,4 +1,4 @@
-package jungle.HandTris.presentation.controller;
+package jungle.HandTris.presentation;
 
 import jungle.HandTris.presentation.dto.request.TetrisMessageRequest;
 import jungle.HandTris.application.service.TetrisService;
