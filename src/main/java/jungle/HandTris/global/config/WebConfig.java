@@ -1,25 +1,24 @@
 package jungle.HandTris.global.config;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
-import org.springframework.boot.context.properties.EnableConfigurationProperties;
 
-@EnableConfigurationProperties(WebConfigProperties.class)
 @Configuration
 public class WebConfig implements WebMvcConfigurer {
 
-    @Autowired
-    WebConfigProperties webConfigProperties;
-
-    @Override
-    public void addCorsMappings(CorsRegistry registry) {
-        registry.addMapping("/**")
-                .allowedOrigins(webConfigProperties.cors().allowedOrigins().toArray(String[]::new))
-                .allowedMethods(webConfigProperties.cors().allowedMethods().toArray(String[]::new))
-                .allowedHeaders(webConfigProperties.cors().allowedHeaders().toArray(String[]::new))
-                .allowCredentials(webConfigProperties.cors().allowCredentials())
-                .maxAge(3600);
+    @Bean
+    public WebMvcConfigurer corsConfigurer() {
+        return new WebMvcConfigurer() {
+            @Override
+            public void addCorsMappings(CorsRegistry registry) {
+                registry.addMapping("/**")
+                        .allowedOrigins("http://localhost:3000")
+                        .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
+                        .allowedHeaders("*")
+                        .allowCredentials(true);
+            }
+        };
     }
 }
