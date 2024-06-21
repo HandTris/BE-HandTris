@@ -1,5 +1,6 @@
 package jungle.HandTris.application.service;
 
+import jakarta.transaction.Transactional;
 import jungle.HandTris.domain.Member;
 import jungle.HandTris.domain.MemberRecord;
 import jungle.HandTris.domain.exception.MemberNotFoundException;
@@ -12,6 +13,7 @@ import org.springframework.stereotype.Service;
 import java.util.Optional;
 
 @Service
+@Transactional
 @RequiredArgsConstructor
 public class MemberService {
     private final MemberRecordRepository memberRecordRepository;

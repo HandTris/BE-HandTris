@@ -1,5 +1,6 @@
 package jungle.HandTris.application.service;
 
+import jakarta.transaction.Transactional;
 import jungle.HandTris.domain.Game;
 import jungle.HandTris.domain.exception.GameNotFoundException;
 import jungle.HandTris.domain.repo.GameRepository;
@@ -10,6 +11,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
+@Transactional
 @RequiredArgsConstructor
 public class GameService {
     private final GameRepository gameRepository;
