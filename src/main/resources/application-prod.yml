@@ -11,7 +11,7 @@ spring:
         format_sql: true
         show_sql: true
   datasource:
-    url: jdbc:mysql://localhost:22306/handtris
-    username: root
-    password: 1234
+    url: ENC(RUIwyNsThoZ0LzHXNQB+3hHU7otlV461EYNpbFPK3chWGZUM8OXShCqdjg/0HI+ndc6eHD9uV/to2RM8nGlOWytJXYUx+fqsQGKuG/cqWzrq1V0eKjn9lg==)
+    username: ENC(N3QGcbod6LQ3O6PqNCx1ffBt+xRc72OW)
+    password: ENC(8era+ZliemtYHHjJnhuz0tqmYeTFYRafSdUoCsFQT5XKJkImCA8oSg==)
     driver-class-name: com.mysql.cj.jdbc.Driver
