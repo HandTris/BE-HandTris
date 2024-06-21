@@ -1,17 +1,11 @@
 spring:
   application:
     name: HandTris
-  jpa:
-    open-in-view: false
-    hibernate:
-      ddl-auto: update
-    properties:
-      hibernate:
-        jdbc:
-        format_sql: true
-        show_sql: true
-  datasource:
-    url: jdbc:mysql://localhost:22306/handtris
-    username: root
-    password: 1234
-    driver-class-name: com.mysql.cj.jdbc.Driver
+  profiles:
+    active:
+      - prod
+    group:
+      dev:
+        - dev
+      prod:
+        - prod
