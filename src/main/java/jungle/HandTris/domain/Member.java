@@ -2,7 +2,9 @@ package jungle.HandTris.domain;
 
 
 import jakarta.persistence.*;
+import lombok.Getter;
 
+@Getter
 @Entity
 public class Member {
     @Id
@@ -17,5 +19,5 @@ public class Member {
 
     @Column(nullable = false, unique = true)
     private String nickname;
-    
+
 }

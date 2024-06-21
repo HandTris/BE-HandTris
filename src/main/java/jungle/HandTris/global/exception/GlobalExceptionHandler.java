@@ -20,17 +20,23 @@ public class GlobalExceptionHandler {
     private final Map<Class<? extends Exception>, ErrorCode> exceptionMap;
 
     public GlobalExceptionHandler() {
+        // exception을 상속받은 클래스 : 에러코드 짝으로 이루어진 맵을 만든다.
         Map<Class<? extends Exception>, ErrorCode> tempMap = new HashMap<>();
+        // 모든 에러코드 반복문
         for (ErrorCode errorCode : ErrorCode.values()) {
+            // 에러코드의 exceptions 필드 가져오기
             Set<Class<? extends Exception>> exceptions = errorCode.getExceptions();
+            // 모든 exception에 대해서
             for (Class<? extends Exception> exception : exceptions) {
+                // exception과 에러코드 페어를 맵에 추가
                 tempMap.put(exception, errorCode);
             }
         }
-
+        // 클로벌 예외처리 핸들러 필드에 추가
         this.exceptionMap = Collections.unmodifiableMap(tempMap);
     }
 
+    // 예외 발생시 맵에 있으면 찾아서 반환
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ResponseEnvelope<?>> handleException(Exception e) {
         if (exceptionMap.containsKey(e.getClass())) {
