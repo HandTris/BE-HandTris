@@ -9,6 +9,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.UUID;
 
 @Service
 @Transactional
@@ -20,7 +21,7 @@ public class GameService {
         return gameRepository.findAllByGameStatusNotPlaying();
     }
 
-    public Game createGame(GameDetailReq gameDetailReq) {
+    public UUID createGame(GameDetailReq gameDetailReq) {
         /*
         입력 데이터
             - 게임 카테고리
@@ -31,7 +32,7 @@ public class GameService {
             - gameStatus : NON_PLAYING
          */
         Game createdGame = new Game(gameDetailReq);
-        return gameRepository.save(createdGame);
+        return createdGame.getUuid();
     }
 
     public Game enterGame(long gameId) {

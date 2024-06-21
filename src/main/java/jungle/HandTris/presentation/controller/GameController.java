@@ -10,6 +10,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.UUID;
 
 @RestController
 @RequiredArgsConstructor
@@ -27,11 +28,9 @@ public class GameController {
     }
 
     @PostMapping
-    public ResponseEnvelope<GameDetailRes> createGame(@Valid @RequestBody GameDetailReq gameDetailReq) {
-
-        Game game = gameService.createGame(gameDetailReq);
-        GameDetailRes gameDetailRes = new GameDetailRes(game);
-        ResponseEnvelope<GameDetailRes> result = new ResponseEnvelope<>("200", gameDetailRes, "성공입니다.");
+    public ResponseEnvelope<UUID> createGame(@Valid @RequestBody GameDetailReq gameDetailReq) {
+        UUID gameUuid = gameService.createGame(gameDetailReq);
+        ResponseEnvelope<UUID> result = new ResponseEnvelope<>("200", gameUuid, "성공입니다.");
         return result;
     }
 
@@ -42,7 +41,7 @@ public class GameController {
         ResponseEnvelope<GameDetailRes> result = new ResponseEnvelope<>("200", gameDetailRes, "성공입니다.");
         return result;
     }
-    
+
     @PostMapping("/{gameId}")
     public ResponseEnvelope<GameDetailRes> exitGame(@PathVariable("gameId") long gameId) {
         Game game = gameService.exitGame(gameId);
