@@ -16,6 +16,7 @@ public class TetrisController {
     @MessageMapping("/tetris")
     @SendTo("/topic/tetris")
     public TetrisMessageRequest handleTetrisMessage(TetrisMessageRequest message) {
+        tetrisService.broadcastTetrisMessage(message);
         return message;
     }
 }
