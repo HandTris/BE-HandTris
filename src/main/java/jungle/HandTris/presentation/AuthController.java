@@ -7,7 +7,6 @@ import jungle.HandTris.presentation.dto.request.MemberRequest;
 import jungle.HandTris.presentation.dto.response.MemberIdDetails;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
