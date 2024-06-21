@@ -469,6 +469,8 @@ document.addEventListener('DOMContentLoaded', function () {
 
         // WebSocket 연결 후에만 메시지 전송
         sendTetrisMessage(board);
+    }, function (error) {
+        console.error('Connection error: ' + error);
     });
     
     document.addEventListener("keydown", CONTROL);
