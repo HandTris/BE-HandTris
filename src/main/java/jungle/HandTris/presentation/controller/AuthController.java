@@ -1,5 +1,6 @@
 package jungle.HandTris.presentation.controller;
 
+import jakarta.validation.Valid;
 import jungle.HandTris.application.service.MemberService;
 import jungle.HandTris.global.dto.ResponseEnvelope;
 import jungle.HandTris.presentation.dto.request.MemberRequest;
@@ -18,7 +19,7 @@ public class AuthController {
     private final MemberService memberService;
 
     @PostMapping("/signup")
-    public ResponseEnvelope<String> signup(@RequestBody MemberRequest memberRequest) {
+    public ResponseEnvelope<String> signup(@RequestBody @Valid MemberRequest memberRequest) {
         memberService.signup(memberRequest);
 
         return ResponseEnvelope.of("Signup Successful");
