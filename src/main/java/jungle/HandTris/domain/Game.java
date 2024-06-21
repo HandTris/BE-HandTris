@@ -33,8 +33,8 @@ public class Game {
     private GameStatus gameStatus;
 
     public Game(GameDetailReq gameDetailReq) {
-        this.gameCategory = GameCategory.valueOf(GameCategory.class, gameDetailReq.getGameCategory());
-        this.participantLimit = gameDetailReq.getParticipantLimit();
+        this.gameCategory = GameCategory.valueOf(GameCategory.class, gameDetailReq.gameCategory());
+        this.participantLimit = gameDetailReq.participantLimit();
         this.uuid = UUID.randomUUID();
         this.gameStatus = GameStatus.NON_PLAYING;
         this.participantCount = 1;
