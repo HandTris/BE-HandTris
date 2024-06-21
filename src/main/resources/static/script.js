@@ -1,7 +1,6 @@
 let socket = new SockJS('/tetris');
 let stompClient = Stomp.over(socket);
 let connected = false;
-// let sessionId = null;
 
 document.addEventListener('DOMContentLoaded', function () {
     const videoElement = document.getElementById('video');
@@ -456,10 +455,6 @@ document.addEventListener('DOMContentLoaded', function () {
     stompClient.connect({}, function (frame) {
         console.log('Connected: ' + frame);
         connected = true;
-
-        // sessionId 부분 추가
-        // sessionId = /\/([^\/]+)\/websocket/.exec(socket._transport.url)[1];
-        // console.log('Session ID: ' + sessionId);
 
         stompClient.subscribe('/topic/tetris', function (message) {
             let tetrisMessage = JSON.parse(message.body);
