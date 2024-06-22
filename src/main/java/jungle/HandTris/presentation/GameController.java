@@ -33,7 +33,7 @@ public class GameController {
         return result;
     }
 
-    @PostMapping("/{gameId}")
+    @PostMapping("/{gameId}/enter")
     public ResponseEnvelope<GameDetailRes> enterGame(@PathVariable("gameId") long gameId) {
         Game game = gameService.enterGame(gameId);
         GameDetailRes gameDetailRes = new GameDetailRes(game);
@@ -41,7 +41,7 @@ public class GameController {
         return result;
     }
 
-    @PostMapping("/{gameId}")
+    @PostMapping("/{gameId}/exit")
     public ResponseEnvelope<GameDetailRes> exitGame(@PathVariable("gameId") long gameId) {
         Game game = gameService.exitGame(gameId);
         GameDetailRes gameDetailRes = new GameDetailRes(game);
