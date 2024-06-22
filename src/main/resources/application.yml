@@ -9,3 +9,7 @@ spring:
         - dev
       prod:
         - prod
+
+jasypt:
+  encryptor:
+    bean: jasyptStringEncryptor
