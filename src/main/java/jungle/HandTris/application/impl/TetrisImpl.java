@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
-public class TetrisImplement implements TetrisService {
+public class TetrisImpl implements TetrisService {
     private final SimpMessagingTemplate messagingTemplate;
 
     public void broadcastTetrisMessage(TetrisMessageRequest message) {
