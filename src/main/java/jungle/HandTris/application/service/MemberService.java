@@ -1,6 +1,5 @@
 package jungle.HandTris.application.service;
 
-import jakarta.servlet.http.HttpServletResponse;
 import jungle.HandTris.domain.Member;
 import jungle.HandTris.domain.exception.DuplicateNicknameException;
 import jungle.HandTris.domain.exception.DuplicateUsernameException;
@@ -10,6 +9,7 @@ import jungle.HandTris.domain.repo.MemberRepository;
 import jungle.HandTris.global.jwt.JWTUtil;
 import jungle.HandTris.presentation.dto.request.MemberRequest;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.util.Pair;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import jakarta.transaction.Transactional;
@@ -24,7 +24,7 @@ public class MemberService {
     private final JWTUtil jwtUtil;
 
     @Transactional
-    public Long signin (MemberRequest memberRequest, HttpServletResponse response) {
+    public Pair<Long, String> signin (MemberRequest memberRequest) {
         String username = memberRequest.username();
         String password = memberRequest.password();
 
@@ -35,9 +35,10 @@ public class MemberService {
         if (!bCryptPasswordEncoder.matches(password, member.getPassword())) {
             throw new PasswordMismatchException();
         }
-        response.addHeader(jwtUtil.AUTHORIZATION_HEADER, jwtUtil.createToken(member.getUsername(), member.getNickname()));
 
-        return member.getId();
+        String token = jwtUtil.createToken(member.getUsername(), member.getNickname());
+
+        return Pair.of(member.getId(), token);
     }
 
     @Transactional
