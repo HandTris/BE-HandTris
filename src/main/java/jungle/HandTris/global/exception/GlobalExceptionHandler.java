@@ -27,7 +27,6 @@ public class GlobalExceptionHandler {
                 tempMap.put(exception, errorCode);
             }
         }
-
         this.exceptionMap = Collections.unmodifiableMap(tempMap);
     }
 
