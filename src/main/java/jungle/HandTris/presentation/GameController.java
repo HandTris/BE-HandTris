@@ -33,7 +33,7 @@ public class GameController {
         return result;
     }
 
-    @PatchMapping("/{gameId}")
+    @PostMapping("/{gameId}")
     public ResponseEnvelope<GameDetailRes> enterGame(@PathVariable("gameId") long gameId) {
         Game game = gameService.enterGame(gameId);
         GameDetailRes gameDetailRes = new GameDetailRes(game);
