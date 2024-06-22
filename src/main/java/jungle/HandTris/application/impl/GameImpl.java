@@ -24,15 +24,6 @@ public class GameImpl implements GameService {
     }
 
     public UUID createGame(GameDetailReq gameDetailReq) {
-        /*
-        입력 데이터
-            - 게임 카테고리
-            - 총 인원
-        default값
-            - 참가인원 : 1
-            - uuid : 자동 생성
-            - gameStatus : NON_PLAYING
-         */
         Game createdGame = new Game(gameDetailReq);
         return createdGame.getUuid();
     }
@@ -57,6 +48,6 @@ public class GameImpl implements GameService {
 
     public void deleteGame(long gameId) {
         Game game = gameRepository.findById(gameId).orElseThrow(GameNotFoundException::new);
-        gameRepository.deleteById(gameId);
+        gameRepository.delete(game);
     }
 }
