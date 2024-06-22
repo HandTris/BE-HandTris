@@ -6,20 +6,20 @@ import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
 @Service
-public class UserConnectionService {
+public class MemberConnectionService {
 
-    private Set<String> connectedUsers = ConcurrentHashMap.newKeySet();
+    private Set<String> connectedMembers = ConcurrentHashMap.newKeySet();
 
     public void addUser(String sessionId) {
-        connectedUsers.add(sessionId);
+        connectedMembers.add(sessionId);
     }
 
     public void removeUser(String sessionId) {
-        connectedUsers.remove(sessionId);
+        connectedMembers.remove(sessionId);
     }
 
     public Set<String> getAllUsers() {
-        return connectedUsers;
+        return connectedMembers;
     }
 }
 

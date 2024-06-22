@@ -14,16 +14,16 @@ import java.util.Set;
 @RequiredArgsConstructor
 public class TetrisService {
     private final SimpMessagingTemplate messagingTemplate;
-    private final UserConnectionService userConnectionService;
+    private final MemberConnectionService memberConnectionService;
 
     public void broadcastTetrisMessage(TetrisMessageRequest message) {
-        Set<String> connectedUsers = userConnectionService.getAllUsers();
+        Set<String> connectedUsers = memberConnectionService.getAllUsers();
 
-        for (String sessionId : connectedUsers) {
-            if (!sessionId.equals(message.sender())) {
-                messagingTemplate.convertAndSendToUser(sessionId, "queue/tetris", message, createHeaders(sessionId));
-            }
-        }
+        connectedUsers.stream()
+                .filter(sessionId -> !sessionId.equals(message.sender()))
+                .forEach(sessionId ->
+                        messagingTemplate.convertAndSendToUser(sessionId, "/queue/tetris", message, createHeaders(sessionId))
+                );
     }
 
     private MessageHeaders createHeaders(String sessionId) {
