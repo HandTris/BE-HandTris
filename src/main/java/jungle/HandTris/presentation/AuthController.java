@@ -1,5 +1,6 @@
 package jungle.HandTris.presentation;
 
+import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import jungle.HandTris.application.service.MemberService;
 import jungle.HandTris.global.dto.ResponseEnvelope;
@@ -25,8 +26,9 @@ public class AuthController {
     }
 
     @PostMapping("/signin")
-    public ResponseEnvelope<MemberIdDetails> signin(@RequestBody MemberRequest memberRequest) {
-        Long memberId = memberService.signin(memberRequest);
+    public ResponseEnvelope<MemberIdDetails> signin(@RequestBody MemberRequest memberRequest, HttpServletResponse response) {
+        Long memberId = memberService.signin(memberRequest, response);
+
 
         return ResponseEnvelope.of(new MemberIdDetails(memberId));
     }

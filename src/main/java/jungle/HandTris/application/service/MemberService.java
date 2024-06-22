@@ -1,12 +1,13 @@
 package jungle.HandTris.application.service;
 
+import jakarta.servlet.http.HttpServletResponse;
 import jungle.HandTris.domain.Member;
 import jungle.HandTris.domain.exception.DuplicateNicknameException;
 import jungle.HandTris.domain.exception.DuplicateUsernameException;
 import jungle.HandTris.domain.exception.PasswordMismatchException;
 import jungle.HandTris.domain.exception.UserNotFoundException;
 import jungle.HandTris.domain.repo.MemberRepository;
-import jungle.HandTris.global.exception.ErrorCode;
+import jungle.HandTris.global.jwt.JWTUtil;
 import jungle.HandTris.presentation.dto.request.MemberRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -20,9 +21,10 @@ import java.util.Optional;
 public class MemberService {
     private final MemberRepository memberRepository;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
+    private final JWTUtil jwtUtil;
 
     @Transactional
-    public Long signin (MemberRequest memberRequest) {
+    public Long signin (MemberRequest memberRequest, HttpServletResponse response) {
         String username = memberRequest.username();
         String password = memberRequest.password();
 
@@ -33,6 +35,7 @@ public class MemberService {
         if (!bCryptPasswordEncoder.matches(password, member.getPassword())) {
             throw new PasswordMismatchException();
         }
+        response.addHeader(jwtUtil.AUTHORIZATION_HEADER, jwtUtil.createToken(member.getUsername(), member.getNickname()));
 
         return member.getId();
     }
