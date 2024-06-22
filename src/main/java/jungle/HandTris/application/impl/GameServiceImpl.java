@@ -16,7 +16,7 @@ import java.util.UUID;
 @Service
 @Transactional
 @RequiredArgsConstructor
-public class GameImpl implements GameService {
+public class GameServiceImpl implements GameService {
     private final GameRepository gameRepository;
 
     public List<Game> getGameList() {

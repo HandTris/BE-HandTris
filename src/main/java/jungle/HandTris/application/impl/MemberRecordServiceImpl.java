@@ -16,7 +16,7 @@ import java.util.Optional;
 @Service
 @Transactional
 @RequiredArgsConstructor
-public class MemberRecordImpl implements MemberRecordService {
+public class MemberRecordServiceImpl implements MemberRecordService {
 
     private final MemberRecordRepository memberRecordRepository;
     private final MemberRepository memberRepository;
