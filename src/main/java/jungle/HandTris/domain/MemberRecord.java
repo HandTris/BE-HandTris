@@ -1,10 +1,12 @@
 package jungle.HandTris.domain;
 
 import jakarta.persistence.*;
+import lombok.Getter;
 
 import java.math.BigDecimal;
 import java.time.LocalTime;
 
+@Getter
 @Entity
 public class MemberRecord {
 

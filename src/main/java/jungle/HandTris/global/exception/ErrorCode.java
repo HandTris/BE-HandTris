@@ -1,10 +1,7 @@
 package jungle.HandTris.global.exception;
 
 import jakarta.validation.ConstraintViolationException;
-import jungle.HandTris.domain.exception.DuplicateNicknameException;
-import jungle.HandTris.domain.exception.DuplicateUsernameException;
-import jungle.HandTris.domain.exception.PasswordMismatchException;
-import jungle.HandTris.domain.exception.UserNotFoundException;
+import jungle.HandTris.domain.exception.*;
 import lombok.Getter;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
@@ -20,6 +17,13 @@ public enum ErrorCode {
     INVALID_INPUT_VALUE(HttpStatus.BAD_REQUEST, "입력 값이 올바르지 않습니다.",
             Set.of(MethodArgumentNotValidException.class, ConstraintViolationException.class)),
     METHOD_NOT_ALLOWED(HttpStatus.METHOD_NOT_ALLOWED, "지원하지 않는 HTTP 메서드입니다.", Set.of(HttpRequestMethodNotSupportedException.class)),
+
+    ALREADY_PLAYING(HttpStatus.BAD_REQUEST, "이미 진행중인 게임입니다.", Set.of(PlayingGameException.class)),
+    LIMITED_PARTICIPANT(HttpStatus.BAD_REQUEST, "인원이 꽉 찼습니다.", Set.of(ParticipantLimitedException.class)),
+    GAME_NOT_FOUND(HttpStatus.BAD_REQUEST, "게임이 존재하지 않습니다.", Set.of(GameNotFoundException.class)),
+    MEMBER_NOT_FOUND(HttpStatus.BAD_REQUEST, "유저가 존재하지 않습니다.", Set.of(MemberNotFoundException.class)),
+    MEMBER_RECORD_NOT_FOUND(HttpStatus.BAD_REQUEST, "전적이 존재하지 않습니다.", Set.of(MemberRecordNodFoundException.class)),
+
     DUPLICATE_NICKNAME(HttpStatus.BAD_REQUEST, "이미 존재하는 닉네임 입니다.", Set.of(DuplicateNicknameException.class)),
     DUPLICATE_USERNAME(HttpStatus.BAD_REQUEST, "이미 존재하는 ID 입니다.", Set.of(DuplicateUsernameException.class)),
     USER_NOT_FOUND(HttpStatus.UNAUTHORIZED, "등록된 사용자가 없습니다.", Set.of(UserNotFoundException.class)),
