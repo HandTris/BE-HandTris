@@ -56,6 +56,10 @@ dependencies {
 
     //yaml
     implementation 'com.github.ulisesbocchio:jasypt-spring-boot-starter:3.0.3'
+
+    //sentry
+    implementation 'org.springframework.boot:spring-boot-starter-aop'
+    implementation 'io.sentry:sentry-spring-boot-starter:6.2.1'
 }
 
 tasks.named('test') {
