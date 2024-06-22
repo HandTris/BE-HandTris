@@ -7,5 +7,7 @@ spring:
     group:
       dev:
         - dev
+        - jwt
       prod:
         - prod
+        - jwt

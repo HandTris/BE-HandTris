@@ -1,0 +1,6 @@
+spring:
+  jwt:
+    secret:
+      key:
+    token:
+      expiration: 3600000
