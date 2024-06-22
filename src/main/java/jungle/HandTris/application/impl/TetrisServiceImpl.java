@@ -10,7 +10,6 @@ import org.springframework.messaging.simp.SimpMessageType;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Service;
 
-import java.util.Map;
 import java.util.Set;
 
 @Service
@@ -25,7 +24,7 @@ public class TetrisServiceImpl implements TetrisService {
         connectedUsers.stream()
                 .filter(sessionId -> !sessionId.equals(message.sender()))
                 .forEach(sessionId ->
-                        messagingTemplate.convertAndSendToUser(sessionId, "/queue/tetris", message, createHeaders(sessionId))
+                        messagingTemplate.convertAndSendToUser(sessionId, "queue/tetris", message, createHeaders(sessionId))
                 );
     }
 
