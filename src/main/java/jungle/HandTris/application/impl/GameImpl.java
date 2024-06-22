@@ -25,6 +25,7 @@ public class GameImpl implements GameService {
 
     public UUID createGame(GameDetailReq gameDetailReq) {
         Game createdGame = new Game(gameDetailReq);
+        gameRepository.save(createdGame);
         return createdGame.getUuid();
     }
 

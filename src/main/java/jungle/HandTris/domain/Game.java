@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import jungle.HandTris.domain.exception.ParticipantLimitedException;
 import jungle.HandTris.domain.exception.PlayingGameException;
 import jungle.HandTris.presentation.dto.request.GameDetailReq;
+import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -11,7 +12,7 @@ import java.util.UUID;
 
 @Getter
 @Entity
-@NoArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Game {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
