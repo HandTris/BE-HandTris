@@ -38,3 +38,4 @@ out/
 
 ### DB ###
 db/*
+src/test/*

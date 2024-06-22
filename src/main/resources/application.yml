@@ -11,3 +11,6 @@ spring:
       prod:
         - prod
         - jwt
+jasypt:
+  encryptor:
+    bean: jasyptStringEncryptor
