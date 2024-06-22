@@ -13,3 +13,10 @@ spring:
 jasypt:
   encryptor:
     bean: jasyptStringEncryptor
+
+sentry:
+  dsn: ENC(pi9dhRdrLGyo+FkLZTpGiAnbqs2d202k9DRHF7P+kzv+nRCItoIpqQ126nuh65ZS41Pcu9IdIZ2xDFzSpn3kInFVRY+J00Q6mIbrel9c4TJq3735uZ7n+d4+fmKx2DDv8DGy18scBq4=)
+  traces-sample-rate: 1.0 # 전송할 트랜잭션의 양 1 = 100%
+  logging:
+    minimum-event-level: info # 최소 이벤트 레벨
+    minimum-breadcrumb-level: info # 최소 브래드크럼 레벨
