@@ -1,4 +1,4 @@
-package jungle.HandTris.presentation.controller;
+package jungle.HandTris.presentation;
 
 import jungle.HandTris.application.service.MemberRecordService;
 import jungle.HandTris.domain.MemberRecord;

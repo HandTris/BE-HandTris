@@ -1,4 +1,4 @@
-package jungle.HandTris.presentation.controller;
+package jungle.HandTris.presentation;
 
 import jungle.HandTris.application.service.MemberService;
 import lombok.RequiredArgsConstructor;
