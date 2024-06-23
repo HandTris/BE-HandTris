@@ -1,6 +1,8 @@
 spring:
   jwt:
     secret:
-      key:
-    token:
-      expiration: 3600000
+    access:
+      expiration: 3600000 # 1h
+    refresh:
+      expiration: 86400000 # 24h
+    issuer: Handtris
