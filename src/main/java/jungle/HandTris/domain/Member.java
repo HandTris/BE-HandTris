@@ -23,9 +23,16 @@ public class Member {
     @Column(nullable = false, unique = true)
     private String nickname;
 
+    @Column(length = 500)
+    private String refreshToken;
+
     public Member(String username, String password, String nickname) {
         this.username = username;
         this.password = password;
         this.nickname = nickname;
+    }
+
+    public void setRefreshToken(String refreshToken) {
+        this.refreshToken = refreshToken;
     }
 }
