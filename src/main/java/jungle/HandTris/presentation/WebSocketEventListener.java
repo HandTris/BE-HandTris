@@ -28,4 +28,3 @@ public class WebSocketEventListener {
         memberConnectionService.removeUser(sessionId);
     }
 }
-

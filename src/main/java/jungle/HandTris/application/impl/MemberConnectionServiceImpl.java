@@ -30,4 +30,8 @@ public class MemberConnectionServiceImpl implements MemberConnectionService {
     public Set<String> getAllUsers() {
         return connectedMembers;
     }
+
+    public String getFirstUser() {
+        return connectedMembers.stream().findFirst().orElseThrow();
+    }
 }
