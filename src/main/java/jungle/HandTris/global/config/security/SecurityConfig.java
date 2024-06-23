@@ -1,4 +1,4 @@
-package jungle.HandTris.global.config.Security;
+package jungle.HandTris.global.config.security;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -28,10 +28,14 @@ public class SecurityConfig {
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 
         http
-                .authorizeHttpRequests(auth -> auth
-                        .anyRequest().permitAll()
-                )
                 .csrf((auth) -> auth.disable()
+                )
+                .formLogin((auth) -> auth.disable()
+                )
+                .httpBasic((auth) -> auth.disable()
+                )
+                .authorizeHttpRequests((auth) -> auth
+                        .anyRequest().permitAll()
                 )
                 .sessionManagement((session) -> session
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS)

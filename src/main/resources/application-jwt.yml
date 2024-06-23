@@ -1,0 +1,13 @@
+spring:
+  jwt:
+    secret:
+    access:
+      expiration: 3600000 # 1h
+      header: Authorization
+      subject: AccessToken
+    refresh:
+      expiration: 86400000 # 24h
+      header: Authorization-Refresh
+      subject: RefreshToken
+    issuer: Handtris
+    bearer: Bearer
