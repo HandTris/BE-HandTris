@@ -2,10 +2,12 @@ package jungle.HandTris.presentation;
 
 import jakarta.validation.Valid;
 import jungle.HandTris.application.service.MemberService;
+import jungle.HandTris.domain.Member;
 import jungle.HandTris.domain.repo.MemberRepository;
 import jungle.HandTris.global.dto.ResponseEnvelope;
 import jungle.HandTris.global.jwt.JWTUtil;
 import jungle.HandTris.presentation.dto.request.MemberRequest;
+import jungle.HandTris.presentation.dto.response.MemberDetailRes;
 import jungle.HandTris.presentation.dto.response.MemberIdDetails;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.util.Pair;
@@ -32,10 +34,9 @@ public class AuthController {
     }
 
     @PostMapping("/signin")
-    public ResponseEntity<MemberIdDetails> signin(@RequestBody MemberRequest memberRequest) {
-        Pair<Long, String> result = memberService.signin(memberRequest);
+    public ResponseEntity<MemberDetailRes> signin(@RequestBody MemberRequest memberRequest) {
+        Pair<MemberDetailRes, String> result = memberService.signin(memberRequest);
 
-        Long memberId = result.getFirst();
         String accessToken = result.getSecond();
         String refreshToken = memberRepository.findByUsername(memberRequest.username()).getRefreshToken();
 
@@ -45,6 +46,6 @@ public class AuthController {
 
         return ResponseEntity.ok()
                 .headers(headers)
-                .body((new MemberIdDetails(memberId)));
+                .body(result.getFirst());
     }
 }
