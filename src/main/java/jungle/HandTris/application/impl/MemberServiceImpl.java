@@ -37,9 +37,13 @@ public class MemberServiceImpl implements MemberService {
             throw new PasswordMismatchException();
         }
 
-        String token = jwtUtil.createToken(member.getUsername(), member.getNickname());
+        String accessToken = jwtUtil.createAccessToken(member.getNickname());
+        String refreshToken = jwtUtil.createRefreshToken();
 
-        return Pair.of(member.getId(), token);
+        member.setRefreshToken(refreshToken);
+        memberRepository.save(member);
+
+        return Pair.of(member.getId(), accessToken);
     }
 
     @Transactional
