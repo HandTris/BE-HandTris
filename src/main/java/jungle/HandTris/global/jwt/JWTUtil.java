@@ -2,6 +2,8 @@ package jungle.HandTris.global.jwt;
 
 import io.jsonwebtoken.*;
 import jakarta.servlet.http.HttpServletRequest;
+import jungle.HandTris.domain.exception.InvalidTokenFormatException;
+import jungle.HandTris.domain.exception.TokenNotProvideException;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
@@ -13,20 +15,29 @@ import java.util.Date;
 
 @Component
 public class JWTUtil {
-    public static final String AUTHORIZATION_HEADER = "Authorization";
-    public static final String REFRESH_HEADER = "Refresh-Token";
-    private static final String ACCESS_TOKEN_SUBJECT = "AccessToken";
-    private static final String REFRESH_TOKEN_SUBJECT = "RefreshToken";
-    private static final String BEARER_PREFIX = "Bearer ";
+    @Value("${spring.jwt.access.header}")
+    public String accessHeader;
+
+    @Value("${spring.jwt.access.subject}")
+    private String accessSubject;
 
     @Value("${spring.jwt.access.expiration}")
     private long validityInMillisecondsAccess;
+
+    @Value("${spring.jwt.refresh.header}")
+    public String refreshHeader;
+
+    @Value("${spring.jwt.refresh.subject}")
+    private String refreshSubject;
 
     @Value("${spring.jwt.refresh.expiration}")
     private long validityInMillisecondsRefresh;
 
     @Value("${spring.jwt.issuer}")
     private String issuer;
+
+    @Value("${spring.jwt.bearer}")
+    private String bearerPrefix;
 
     private final SecretKey secretKey;
 
@@ -35,25 +46,40 @@ public class JWTUtil {
                 Jwts.SIG.HS256.key().build().getAlgorithm());
     }
 
-    // header 토큰을 가져오기
-    public String resolveToken(HttpServletRequest request) {
-        String bearerToken = request.getHeader(AUTHORIZATION_HEADER);
-        if (StringUtils.hasText(bearerToken) && bearerToken.startsWith(BEARER_PREFIX)) {
-            return bearerToken.substring(7);
+    // header Access 토큰을 가져오기
+    public String resolveAccessToken(HttpServletRequest request) {
+        String bearerToken = request.getHeader(accessHeader);
+        if (StringUtils.hasText(bearerToken)) {
+            if (bearerToken.startsWith(bearerPrefix)) {
+                return bearerToken.substring(7);
+            }
+            throw new InvalidTokenFormatException();
         }
-        return null;
+        throw new TokenNotProvideException();
+    }
+
+    // header Refresh 토큰을 가져오기
+    public String resolveRefreshToken(HttpServletRequest request) {
+        String bearerToken = request.getHeader(refreshHeader);
+        if (StringUtils.hasText(bearerToken)) {
+            if (bearerToken.startsWith(bearerPrefix)) {
+                return bearerToken.substring(7);
+            }
+            throw new InvalidTokenFormatException();
+        }
+        throw new TokenNotProvideException();
     }
 
     // Access 토큰 생성
     public String createAccessToken(String nickname) {
         Date now = new Date();
 
-        return BEARER_PREFIX +
+        return bearerPrefix + " " +
                 Jwts.builder()
                         .header()
                             .type("JWT")
                         .and()
-                        .subject(ACCESS_TOKEN_SUBJECT)
+                        .subject(accessSubject)
                         .claim("nickname", nickname)
                         .issuedAt(now)
                         .expiration(new Date(now.getTime() + validityInMillisecondsAccess))
@@ -66,12 +92,12 @@ public class JWTUtil {
     public String createRefreshToken() {
         Date now = new Date();
 
-        return BEARER_PREFIX +
+        return bearerPrefix +" " +
                 Jwts.builder()
                         .header()
                             .type("JWT")
                         .and()
-                        .subject(REFRESH_TOKEN_SUBJECT)
+                        .subject(refreshSubject)
                         .issuedAt(now)
                         .expiration(new Date(now.getTime() + validityInMillisecondsRefresh))
                         .signWith(secretKey)
