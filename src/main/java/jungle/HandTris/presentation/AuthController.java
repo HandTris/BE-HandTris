@@ -2,6 +2,7 @@ package jungle.HandTris.presentation;
 
 import jakarta.validation.Valid;
 import jungle.HandTris.application.service.MemberService;
+import jungle.HandTris.domain.repo.MemberRepository;
 import jungle.HandTris.global.dto.ResponseEnvelope;
 import jungle.HandTris.global.jwt.JWTUtil;
 import jungle.HandTris.presentation.dto.request.MemberRequest;
@@ -20,6 +21,7 @@ public class AuthController {
 
     private final MemberService memberService;
     private final JWTUtil jwtUtil;
+    private final MemberRepository memberRepository;
 
     @PostMapping("/signup")
     @ResponseStatus(HttpStatus.CREATED)
@@ -34,10 +36,12 @@ public class AuthController {
         Pair<Long, String> result = memberService.signin(memberRequest);
 
         Long memberId = result.getFirst();
-        String token = result.getSecond();
+        String accessToken = result.getSecond();
+        String refreshToken = memberRepository.findByUsername(memberRequest.username()).getRefreshToken();
 
         HttpHeaders headers = new HttpHeaders();
-        headers.add(jwtUtil.AUTHORIZATION_HEADER, token);
+        headers.add(jwtUtil.AUTHORIZATION_HEADER, accessToken);
+        headers.add(jwtUtil.REFRESH_HEADER, refreshToken);
 
         return ResponseEntity.ok()
                 .headers(headers)
