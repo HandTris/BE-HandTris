@@ -32,7 +32,7 @@ public class Member {
         this.nickname = nickname;
     }
 
-    public void setRefreshToken(String refreshToken) {
+    public void updateRefreshToken(String refreshToken) {
         this.refreshToken = refreshToken;
     }
 }

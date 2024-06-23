@@ -40,7 +40,7 @@ public class MemberServiceImpl implements MemberService {
         String accessToken = jwtUtil.createAccessToken(member.getNickname());
         String refreshToken = jwtUtil.createRefreshToken();
 
-        member.setRefreshToken(refreshToken);
+        member.updateRefreshToken(refreshToken);
         memberRepository.save(member);
 
         return Pair.of(member.getId(), accessToken);
