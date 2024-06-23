@@ -14,13 +14,23 @@ import java.util.Date;
 @Component
 public class JWTUtil {
     public static final String AUTHORIZATION_HEADER = "Authorization";
+    public static final String REFRESH_HEADER = "Refresh-Token";
+    private static final String ACCESS_TOKEN_SUBJECT = "AccessToken";
+    private static final String REFRESH_TOKEN_SUBJECT = "RefreshToken";
     private static final String BEARER_PREFIX = "Bearer ";
 
-    @Value("${spring.jwt.token.expiration}")
-    private long validityInMilliseconds;
+    @Value("${spring.jwt.access.expiration}")
+    private long validityInMillisecondsAccess;
+
+    @Value("${spring.jwt.refresh.expiration}")
+    private long validityInMillisecondsRefresh;
+
+    @Value("${spring.jwt.issuer}")
+    private String issuer;
+
     private final SecretKey secretKey;
 
-    public JWTUtil(@Value("${spring.jwt.secret.key}")String secret) {
+    public JWTUtil(@Value("${spring.jwt.secret}")String secret) {
         this.secretKey = new SecretKeySpec(secret.getBytes(StandardCharsets.UTF_8),
                 Jwts.SIG.HS256.key().build().getAlgorithm());
     }
@@ -34,8 +44,8 @@ public class JWTUtil {
         return null;
     }
 
-    // 토큰 생성
-    public String createToken(String username, String nickname) {
+    // Access 토큰 생성
+    public String createAccessToken(String nickname) {
         Date now = new Date();
 
         return BEARER_PREFIX +
@@ -43,25 +53,32 @@ public class JWTUtil {
                         .header()
                             .type("JWT")
                         .and()
-                        .subject(username)
+                        .subject(ACCESS_TOKEN_SUBJECT)
                         .claim("nickname", nickname)
                         .issuedAt(now)
-                        .expiration(new Date(now.getTime() + validityInMilliseconds))
+                        .expiration(new Date(now.getTime() + validityInMillisecondsAccess))
+                        .issuer(issuer)
+                        .signWith(secretKey)
+                        .compact();
+    }
+
+    // Refresh 토큰 생성
+    public String createRefreshToken() {
+        Date now = new Date();
+
+        return BEARER_PREFIX +
+                Jwts.builder()
+                        .header()
+                            .type("JWT")
+                        .and()
+                        .subject(REFRESH_TOKEN_SUBJECT)
+                        .issuedAt(now)
+                        .expiration(new Date(now.getTime() + validityInMillisecondsRefresh))
                         .signWith(secretKey)
                         .compact();
     }
 
     // 토큰 검증
-    public String getUsername(String token) {
-
-        return Jwts.parser().
-                verifyWith(secretKey)
-                .build()
-                .parseSignedClaims(token)
-                .getPayload()
-                .get("username", String.class);
-    }
-
     public String getNickname(String token) {
 
         return Jwts.parser().
