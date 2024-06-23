@@ -40,8 +40,8 @@ public class AuthController {
         String refreshToken = memberRepository.findByUsername(memberRequest.username()).getRefreshToken();
 
         HttpHeaders headers = new HttpHeaders();
-        headers.add(jwtUtil.AUTHORIZATION_HEADER, accessToken);
-        headers.add(jwtUtil.REFRESH_HEADER, refreshToken);
+        headers.add(jwtUtil.accessHeader, accessToken);
+        headers.add(jwtUtil.refreshHeader, refreshToken);
 
         return ResponseEntity.ok()
                 .headers(headers)
