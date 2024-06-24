@@ -11,12 +11,13 @@ import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.simp.SimpMessageHeaderAccessor;
 import org.springframework.messaging.simp.SimpMessageType;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
-import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Set;
 
-@Controller
+@RestController
 @RequiredArgsConstructor
 public class TetrisController {
     private final SimpMessagingTemplate messagingTemplate;
@@ -56,7 +57,7 @@ public class TetrisController {
         }
     }
 
-    @PostMapping("/user/clear")
+    @GetMapping("/user/clear")
     public void clearUser(){
         if(memberConnectionService.getRoomMemberCount() != 0){
             memberConnectionService.clearUser();
