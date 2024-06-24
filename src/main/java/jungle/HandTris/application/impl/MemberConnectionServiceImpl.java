@@ -1,6 +1,7 @@
 package jungle.HandTris.application.impl;
 
 import jungle.HandTris.application.service.MemberConnectionService;
+import jungle.HandTris.domain.exception.ConnectedMemberNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -29,5 +30,9 @@ public class MemberConnectionServiceImpl implements MemberConnectionService {
     @Override
     public Set<String> getAllUsers() {
         return connectedMembers;
+    }
+
+    public String getFirstUser() {
+        return connectedMembers.stream().findFirst().orElseThrow(() -> new ConnectedMemberNotFoundException());
     }
 }
