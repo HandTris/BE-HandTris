@@ -20,7 +20,7 @@ public enum ErrorCode {
 
     ALREADY_PLAYING(HttpStatus.BAD_REQUEST, "이미 진행중인 게임입니다.", Set.of(PlayingGameException.class)),
     LIMITED_PARTICIPANT(HttpStatus.BAD_REQUEST, "인원이 꽉 찼습니다.", Set.of(ParticipantLimitedException.class)),
-    GAME_NOT_FOUND(HttpStatus.BAD_REQUEST, "게임이 존재하지 않습니다.", Set.of(GameNotFoundException.class)),
+    GAME_ROOM_NOT_FOUND(HttpStatus.BAD_REQUEST, "게임이 존재하지 않습니다.", Set.of(GameRoomNotFoundException.class)),
     MEMBER_NOT_FOUND(HttpStatus.BAD_REQUEST, "유저가 존재하지 않습니다.", Set.of(MemberNotFoundException.class)),
     MEMBER_RECORD_NOT_FOUND(HttpStatus.BAD_REQUEST, "전적이 존재하지 않습니다.", Set.of(MemberRecordNodFoundException.class)),
 
@@ -29,7 +29,7 @@ public enum ErrorCode {
     USER_NOT_FOUND(HttpStatus.UNAUTHORIZED, "등록된 사용자가 없습니다.", Set.of(UserNotFoundException.class)),
     INVALID_CREDENTIALS(HttpStatus.UNAUTHORIZED, "비밀번호가 일치하지 않습니다.", Set.of(PasswordMismatchException.class)),
 
-    TOKEN_NOT_PROVIDED( HttpStatus.UNAUTHORIZED,"토큰이 제공되지 않았습니다.", Set.of(TokenNotProvideException.class)),
+    TOKEN_NOT_PROVIDED(HttpStatus.UNAUTHORIZED, "토큰이 제공되지 않았습니다.", Set.of(TokenNotProvideException.class)),
     INVALID_TOKEN_FORMAT(HttpStatus.UNAUTHORIZED, "잘못된 토큰 형식입니다.", Set.of(InvalidTokenFormatException.class));
 
 
