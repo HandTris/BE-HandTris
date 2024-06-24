@@ -56,7 +56,8 @@ public class Game {
     public void exit() {
         if (gameStatus == GameStatus.PLAYING) {
             throw new PlayingGameException();
-        } else if (participantLimit == 1) {
+        } else if (participantCount == 1) {
+            this.participantCount--;
             System.out.println("Game will be deleted");
         } else {
             this.participantCount--;
