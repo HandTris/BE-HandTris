@@ -30,19 +30,21 @@ public class GameServiceTests {
     @DisplayName("게임 목록 조회 Test")
     void getGameListTest() {
         /* given : 테스트 사전 조건 설정 */
-        GameDetailReq gameDetailReq = new @Valid GameDetailReq("HANDTRIS", 3);
-        Game newgame = new Game(gameDetailReq);
-        gameRepository.save(newgame);
+        GameDetailReq gameDetailReq1 = new @Valid GameDetailReq("HANDTRIS", 2);
+        GameDetailReq gameDetailReq2 = new @Valid GameDetailReq("HANDTRIS", 3);
+        Game game1 = new Game(gameDetailReq1);
+        Game game2 = new Game(gameDetailReq2);
+        gameRepository.save(game1);
+        gameRepository.save(game2);
 
         /* when : 실제 테스트 실행 */
         List<Game> actualGameList = gameServiceImpl.getGameList();
 
         /* then : 테스트 결과 검증 */
-        for (Game game : actualGameList) {
-            System.out.println(game.getGameCategory() + " " + game.getParticipantLimit());
-        }
         Assertions.assertThat(actualGameList).isNotNull();
-        Assertions.assertThat(actualGameList).hasSizeGreaterThan(1);
+        Assertions.assertThat(actualGameList).hasSizeGreaterThan(2);
+        Assertions.assertThat(actualGameList.contains(game1)).isTrue();
+        Assertions.assertThat(actualGameList.contains(game2)).isTrue();
     }
 
     // not in mockito test
