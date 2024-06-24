@@ -35,4 +35,9 @@ public class MemberConnectionServiceImpl implements MemberConnectionService {
     public String getFirstUser() {
         return connectedMembers.stream().findFirst().orElseThrow(() -> new ConnectedMemberNotFoundException());
     }
+
+    @Override
+    public Integer getRoomMemberCount() {
+        return connectedMembers.size();
+    }
 }

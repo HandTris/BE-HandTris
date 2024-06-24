@@ -14,7 +14,7 @@ public class TetrisServiceImpl implements TetrisService {
     public RoomOwnerRes checkRoomOwnerAndReady() {
         // 첫 번째 유저 방장 부여
 //        String firstUser = memberConnectionService.getFirstUser();
-        if (memberConnectionService.getFirstUser() != null) {
+        if (memberConnectionService.getRoomMemberCount() == 1) {
             return new RoomOwnerRes(true);
         }
         return new RoomOwnerRes(false);

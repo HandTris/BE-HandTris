@@ -14,5 +14,7 @@ public interface MemberConnectionService {
     Set<String> getAllUsers();
 
     String getFirstUser();
+
+    Integer getRoomMemberCount();
 }
 
