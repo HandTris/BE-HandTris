@@ -18,12 +18,16 @@ public class MemberConnectionServiceImpl implements MemberConnectionService {
 
     @Override
     public void addUser(String sessionId) {
+        System.out.println("Member Set:" + connectedMembers.toString());
+        System.out.println("Member Set Size:" + connectedMembers.size());
         connectedMembers.add(sessionId);
     }
 
     @Override
     public void
     removeUser(String sessionId) {
+        System.out.println("Member Set:" + connectedMembers.toString());
+        System.out.println("Member Set Size:" + connectedMembers.size());
         connectedMembers.remove(sessionId);
     }
 
