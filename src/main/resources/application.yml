@@ -2,9 +2,8 @@ spring:
   application:
     name: HandTris
   profiles:
-    # todo : commit 시 prod로 변경
     active:
-      - dev
+      - prod
     group:
       dev:
         - dev

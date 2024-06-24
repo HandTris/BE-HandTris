@@ -17,9 +17,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
-import java.util.UUID;
 
-import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
 // junit5에서 Mockito를 사용하기 위해 붙이는 어노테이션, Service 영역에 대한 단위 테스트를 위해서 사용
@@ -61,33 +59,6 @@ public class MockGameServiceTests {
         Assertions.assertThat(actualGameList).containsExactlyInAnyOrderElementsOf(expectedGameList);
     }
 
-
-    // todo : GameDetailReq에는 후보키로 사용되는 정보가 없다.
-    //  즉, 만들어진 Game을 특정할 수 있는 필드들(id,uuid)는 전부 자동 생성되는 필드들이다.
-    //  그럼으로 같은 gameDetailReq으로 Game을 생성해도, 다른 객체가 생성된다.
-    //  만들어진 객체를 특정하기 위해서는 받아온 uuid로 repository에서 찾아야 하는데,
-    //  여기서 reopsitory는 Mock객체이기 때문에, 생성된 Game을 가져올 수 없다.
-    //  따라서 현재 Mock에서의 게임 생성 test는 의미가 없다.
-    @Test
-    @DisplayName("게임 생성 Test")
-    void createGameTest() {
-        /* given : 테스트 사전 조건 설정 */
-        GameDetailReq gameDetailReq = new @Valid GameDetailReq("HANDTRIS", 3);
-        Game game = new Game(gameDetailReq);
-        when(gameRepository.findByUuid(any())).thenReturn(Optional.of(game));
-
-        /* when : 실제 테스트 실행*/
-        UUID gameUuid = gameServiceImpl.createGame(gameDetailReq);
-        System.out.println(gameUuid);
-        System.out.println(game.getUuid());
-
-        /* then : 테스트 결과 검증*/
-        Game createdGame = gameRepository.findByUuid(gameUuid).orElse(null);
-        Assertions.assertThat(createdGame).isNotNull();
-        Assertions.assertThat(createdGame.getGameCategory()).isEqualTo(GameCategory.HANDTRIS);
-        Assertions.assertThat(createdGame.getParticipantLimit()).isEqualTo(3);
-    }
-
     @Test
     @DisplayName("게임 입장 Test")
     void enterGameTest() {
@@ -106,6 +77,28 @@ public class MockGameServiceTests {
         Assertions.assertThat(enteredGame.getGameCategory()).isEqualTo(GameCategory.HANDTRIS);
         Assertions.assertThat(enteredGame.getParticipantLimit()).isEqualTo(3);
         Assertions.assertThat(enteredGame.getParticipantCount()).isEqualTo(beforeParticipantCount + 1);
+    }
+
+
+    @Test
+    @DisplayName("플레이어의 게임 나가기 Test")
+    void exitGameByPlayerTest() {
+        /* given : 테스트 사전 조건 설정 */
+        GameDetailReq gameDetailReq = new @Valid GameDetailReq("HANDTRIS", 3);
+        Game newgame = new Game(gameDetailReq);
+        newgame.enter(); // 게임 임장
+        gameRepository.save(newgame);
+        long gameId = newgame.getId();
+        when(gameRepository.findById(gameId)).thenReturn(Optional.of(newgame));
+
+        /* when : 실제 테스트 실행 */
+        Game exitedGame = gameServiceImpl.exitGame(newgame.getId());
+
+        /* then : 테스트 결과 검증 */
+        Assertions.assertThat(exitedGame).isNotNull();
+        Assertions.assertThat(exitedGame.getGameCategory()).isEqualTo(GameCategory.HANDTRIS);
+        Assertions.assertThat(exitedGame.getParticipantLimit()).isEqualTo(3);
+        Assertions.assertThat(exitedGame.getParticipantCount()).isEqualTo(1);
     }
 
 
