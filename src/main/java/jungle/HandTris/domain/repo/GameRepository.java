@@ -6,6 +6,7 @@ import org.springframework.data.repository.Repository;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 public interface GameRepository extends Repository<Game, Long> {
 
@@ -17,4 +18,7 @@ public interface GameRepository extends Repository<Game, Long> {
     Game save(Game game);
 
     void delete(Game game);
+
+    Optional<Game> findByUuid(UUID gameUuid);
+
 }
