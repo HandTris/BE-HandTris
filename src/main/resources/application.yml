@@ -3,7 +3,7 @@ spring:
     name: HandTris
   profiles:
     active:
-      - prod
+      - prodd
     group:
       dev:
         - dev

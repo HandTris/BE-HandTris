@@ -3,7 +3,7 @@ package jungle.HandTris.domain;
 import jakarta.persistence.*;
 import jungle.HandTris.domain.exception.ParticipantLimitedException;
 import jungle.HandTris.domain.exception.PlayingGameException;
-import jungle.HandTris.presentation.dto.request.GameDetailReq;
+import jungle.HandTris.presentation.dto.request.GameRoomDetailReq;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -13,7 +13,7 @@ import java.util.UUID;
 @Getter
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Game {
+public class GameRoom {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
@@ -33,9 +33,9 @@ public class Game {
     @Enumerated(value = EnumType.STRING)
     private GameStatus gameStatus;
 
-    public Game(GameDetailReq gameDetailReq) {
-        this.gameCategory = GameCategory.valueOf(GameCategory.class, gameDetailReq.gameCategory());
-        this.participantLimit = gameDetailReq.participantLimit();
+    public GameRoom(GameRoomDetailReq gameRoomDetailReq) {
+        this.gameCategory = GameCategory.valueOf(GameCategory.class, gameRoomDetailReq.gameCategory());
+        this.participantLimit = gameRoomDetailReq.participantLimit();
         this.uuid = UUID.randomUUID();
         this.gameStatus = GameStatus.NON_PLAYING;
         this.participantCount = 1;
