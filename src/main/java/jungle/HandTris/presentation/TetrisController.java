@@ -12,6 +12,7 @@ import org.springframework.messaging.simp.SimpMessageHeaderAccessor;
 import org.springframework.messaging.simp.SimpMessageType;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PostMapping;
 
 import java.util.Set;
 
@@ -52,6 +53,13 @@ public class TetrisController {
     public void TetrisStart(TetrisRoomOwnerRequest ownerRequest) {
         if (ownerRequest.isStart()) {
             messagingTemplate.convertAndSend("/topic/state", ownerRequest);
+        }
+    }
+
+    @PostMapping("/user/clear")
+    public void clearUser(){
+        if(memberConnectionService.getRoomMemberCount() != 0){
+            memberConnectionService.clearUser();
         }
     }
 

@@ -36,6 +36,7 @@ public class MemberConnectionServiceImpl implements MemberConnectionService {
         return connectedMembers;
     }
 
+    @Override
     public String getFirstUser() {
         return connectedMembers.stream().findFirst().orElseThrow(() -> new ConnectedMemberNotFoundException());
     }
@@ -44,4 +45,10 @@ public class MemberConnectionServiceImpl implements MemberConnectionService {
     public Integer getRoomMemberCount() {
         return connectedMembers.size();
     }
+
+    @Override
+    public void clearUser(){
+        connectedMembers.clear();
+    }
+
 }

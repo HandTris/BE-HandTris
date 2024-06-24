@@ -16,5 +16,7 @@ public interface MemberConnectionService {
     String getFirstUser();
 
     Integer getRoomMemberCount();
+
+    void clearUser();
 }
 
