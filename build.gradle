@@ -20,6 +20,7 @@ configurations {
 }
 
 repositories {
+    maven { url 'https://jitpack.io' }
     mavenCentral()
 }
 
@@ -60,6 +61,10 @@ dependencies {
     //sentry
     implementation 'org.springframework.boot:spring-boot-starter-aop'
     implementation 'io.sentry:sentry-spring-boot-starter:6.2.1'
+
+    implementation('com.github.napstr:logback-discord-appender:1.0.0')
+    // https://mvnrepository.com/artifact/io.micrometer/micrometer-core
+    implementation group: 'io.micrometer', name: 'micrometer-core', version: '1.12.1'
 }
 
 tasks.named('test') {
