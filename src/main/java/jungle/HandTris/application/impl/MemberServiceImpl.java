@@ -9,7 +9,6 @@ import jungle.HandTris.domain.exception.UserNotFoundException;
 import jungle.HandTris.domain.repo.MemberRepository;
 import jungle.HandTris.global.jwt.JWTUtil;
 import jungle.HandTris.presentation.dto.request.MemberRequest;
-import jungle.HandTris.presentation.dto.response.MemberDetailRes;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.util.Pair;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -26,7 +25,7 @@ public class MemberServiceImpl implements MemberService {
     private final JWTUtil jwtUtil;
 
     @Transactional
-    public Pair<MemberDetailRes, String> signin (MemberRequest memberRequest) {
+    public Pair<Member, String> signin (MemberRequest memberRequest) {
         String username = memberRequest.username();
         String password = memberRequest.password();
 
@@ -44,7 +43,7 @@ public class MemberServiceImpl implements MemberService {
         member.updateRefreshToken(refreshToken);
         memberRepository.save(member);
 
-        return Pair.of(new MemberDetailRes(member.getUsername(), member.getNickname()), accessToken);
+        return Pair.of(member, accessToken);
     }
 
     @Transactional
