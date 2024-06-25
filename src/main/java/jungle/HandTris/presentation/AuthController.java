@@ -6,7 +6,7 @@ import jungle.HandTris.application.service.MemberService;
 import jungle.HandTris.domain.Member;
 import jungle.HandTris.global.dto.ResponseEnvelope;
 import jungle.HandTris.presentation.dto.request.MemberRequest;
-import jungle.HandTris.presentation.dto.response.MemberDetailResWithToken;
+import jungle.HandTris.presentation.dto.response.MemberDetailResWithTokenRes;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.util.Pair;
 import org.springframework.http.HttpStatus;
@@ -28,20 +28,20 @@ public class AuthController {
     }
 
     @PostMapping("/signin")
-    public ResponseEnvelope<MemberDetailResWithToken> signin(@RequestBody MemberRequest memberRequest) {
+    public ResponseEnvelope<MemberDetailResWithTokenRes> signin(@RequestBody MemberRequest memberRequest) {
         Pair<Member, String> result = memberService.signin(memberRequest);
 
         Member member = result.getFirst();
         String accessToken = result.getSecond();
 
-        MemberDetailResWithToken memberDetailResWithToken = new MemberDetailResWithToken(
+        MemberDetailResWithTokenRes memberDetailResWithTokenRes = new MemberDetailResWithTokenRes(
                 member.getUsername(),
                 member.getNickname(),
                 accessToken,
                 member.getRefreshToken()
         );
 
-        return ResponseEnvelope.of(memberDetailResWithToken);
+        return ResponseEnvelope.of(memberDetailResWithTokenRes);
     }
 
     @GetMapping("/signout")
