@@ -22,7 +22,7 @@ public enum ErrorCode {
     LIMITED_PARTICIPANT(HttpStatus.BAD_REQUEST, "인원이 꽉 찼습니다.", Set.of(ParticipantLimitedException.class)),
     GAME_ROOM_NOT_FOUND(HttpStatus.BAD_REQUEST, "게임이 존재하지 않습니다.", Set.of(GameRoomNotFoundException.class)),
     MEMBER_NOT_FOUND(HttpStatus.BAD_REQUEST, "유저가 존재하지 않습니다.", Set.of(MemberNotFoundException.class)),
-    MEMBER_RECORD_NOT_FOUND(HttpStatus.BAD_REQUEST, "전적이 존재하지 않습니다.", Set.of(MemberRecordNodFoundException.class)),
+    MEMBER_RECORD_NOT_FOUND(HttpStatus.BAD_REQUEST, "전적이 존재하지 않습니다.", Set.of(MemberRecordNotFoundException.class)),
 
     DUPLICATE_NICKNAME(HttpStatus.BAD_REQUEST, "이미 존재하는 닉네임 입니다.", Set.of(DuplicateNicknameException.class)),
     DUPLICATE_USERNAME(HttpStatus.BAD_REQUEST, "이미 존재하는 ID 입니다.", Set.of(DuplicateUsernameException.class)),
@@ -32,8 +32,10 @@ public enum ErrorCode {
     TOKEN_NOT_PROVIDED(HttpStatus.UNAUTHORIZED, "토큰이 제공되지 않았습니다.", Set.of(TokenNotProvideException.class)),
     INVALID_TOKEN_FORMAT(HttpStatus.UNAUTHORIZED, "잘못된 토큰 형식입니다.", Set.of(InvalidTokenFormatException.class)),
     ACCESS_TOKEN_EXPIRED(HttpStatus.UNAUTHORIZED, "Access 토큰이 만료되었습니다.", Set.of(AccessTokenExpiredException.class)),
-    REFRESH_TOKEN_EXPIRED(HttpStatus.UNAUTHORIZED, "Refresh 토큰이 만료되었습니다.", Set.of(RefreshTokenExpiredException.class));
-
+    REFRESH_TOKEN_EXPIRED(HttpStatus.UNAUTHORIZED, "Refresh 토큰이 만료되었습니다.", Set.of(RefreshTokenExpiredException.class)),
+  
+    DISCORD_LOG_APPENDER(HttpStatus.INTERNAL_SERVER_ERROR, "디스코드 로그 전송에 실패하였습니다", Set.of(DiscordLogException.class)),
+    DISCORD_CONNECT(HttpStatus.INTERNAL_SERVER_ERROR, "디스코드 연결에 실패하였습니다", Set.of(DiscordException.class));
 
     private final HttpStatusCode status;
     private final String code;

@@ -5,7 +5,7 @@ import jungle.HandTris.application.service.MemberRecordService;
 import jungle.HandTris.domain.Member;
 import jungle.HandTris.domain.MemberRecord;
 import jungle.HandTris.domain.exception.MemberNotFoundException;
-import jungle.HandTris.domain.exception.MemberRecordNodFoundException;
+import jungle.HandTris.domain.exception.MemberRecordNotFoundException;
 import jungle.HandTris.domain.repo.MemberRecordRepository;
 import jungle.HandTris.domain.repo.MemberRepository;
 import lombok.RequiredArgsConstructor;
@@ -29,7 +29,7 @@ public class MemberRecordServiceImpl implements MemberRecordService {
         }
         Optional<MemberRecord> memberRecord = memberRecordRepository.findByMember(member.get());
         if (memberRecord.isEmpty()) {
-            throw new MemberRecordNodFoundException();
+            throw new MemberRecordNotFoundException();
         }
         return memberRecord.get();
     }

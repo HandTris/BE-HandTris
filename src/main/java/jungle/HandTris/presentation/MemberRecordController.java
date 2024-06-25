@@ -18,10 +18,10 @@ public class MemberRecordController {
     private final MemberRecordService memberRecordService;
 
     @GetMapping("/{nickname}")
-    public ResponseEnvelope<MemberRecordDetailRes> getMemberRecord(@PathVariable("nickname") String memberNickname) {
-        MemberRecord memberRecord = memberRecordService.getMemberRecord(memberNickname);
+    public ResponseEnvelope<MemberRecordDetailRes> getMemberRecord(@PathVariable("nickname") String nickname) {
+        MemberRecord memberRecord = memberRecordService.getMemberRecord(nickname);
         MemberRecordDetailRes memberRecordDetailRes = new MemberRecordDetailRes(memberRecord);
-        return new ResponseEnvelope<>("200", memberRecordDetailRes, "성공입니다.");
+        return ResponseEnvelope.of(memberRecordDetailRes);
     }
 
 }

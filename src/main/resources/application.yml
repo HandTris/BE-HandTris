@@ -14,3 +14,30 @@ spring:
 jasypt:
   encryptor:
     bean: jasyptStringEncryptor
+
+---
+spring:
+  config:
+    activate:
+      on-profile: dev
+
+logging:
+  config: classpath:logback-dev.xml
+  discord:
+    webhook-uri: https://discord.com/api/webhooks/1254394407206125568/7yvFd17WWaMmLLRyvGiagz687wo_QDCPC419w4xLaZS9Ul8ERZ-LZz9PkCrAHb0C4Ssy
+  pattern:
+    console: "%d{HH:mm:ss} [%thread] [%-5level] %logger{36} - %msg%n"
+
+---
+
+spring:
+  config:
+    activate:
+      on-profile: prod
+
+logging:
+  config: classpath:logback-prod.xml
+  discord:
+    webhook-uri: https://discord.com/api/webhooks/1254442633280098385/eNrxpTC3xpcNVQY4LaQXaBd2XTRTHK7lI_xjvc3mRg543q7WdkxeQhE-xhIXSRNdA13q
+  pattern:
+    console: "%d{HH:mm:ss} [%thread] [%-5level] %logger{36} - %msg%n"
