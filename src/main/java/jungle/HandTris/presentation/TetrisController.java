@@ -3,8 +3,9 @@ package jungle.HandTris.presentation;
 import jungle.HandTris.application.service.MemberConnectionService;
 import jungle.HandTris.application.service.TetrisService;
 import jungle.HandTris.presentation.dto.request.TetrisMessageRequest;
-import jungle.HandTris.presentation.dto.request.TetrisRoomOwnerRequest;
+import jungle.HandTris.presentation.dto.request.RoomStateReq;
 import jungle.HandTris.presentation.dto.response.RoomOwnerRes;
+import jungle.HandTris.presentation.dto.response.RoomStateRes;
 import lombok.RequiredArgsConstructor;
 import org.springframework.messaging.MessageHeaders;
 import org.springframework.messaging.handler.annotation.MessageMapping;
@@ -12,7 +13,6 @@ import org.springframework.messaging.simp.SimpMessageHeaderAccessor;
 import org.springframework.messaging.simp.SimpMessageType;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Set;
@@ -44,16 +44,18 @@ public class TetrisController {
     }
 
     @MessageMapping("/tetris/ready")
-    public void TetrisReady(TetrisRoomOwnerRequest ownerRequest) {
-        if (ownerRequest.isReady()) {
-            messagingTemplate.convertAndSend("/topic/state", ownerRequest);
+    public void TetrisReady(RoomStateReq req) {
+        if(req.isReady()){
+            RoomStateRes res = new RoomStateRes(true,false);
+            messagingTemplate.convertAndSend("/topic/state", res);
         }
     }
 
     @MessageMapping("/tetris/start")
-    public void TetrisStart(TetrisRoomOwnerRequest ownerRequest) {
-        if (ownerRequest.isStart()) {
-            messagingTemplate.convertAndSend("/topic/state", ownerRequest);
+    public void TetrisStart(RoomStateReq req) {
+        if (req.isStart()) {
+            RoomStateRes res = new RoomStateRes(true,true);
+            messagingTemplate.convertAndSend("/topic/state", res);
         }
     }
 
