@@ -3,7 +3,7 @@ spring:
     name: HandTris
   profiles:
     active:
-      - prod
+      - dev
     group:
       dev:
         - dev
@@ -14,9 +14,29 @@ jasypt:
   encryptor:
     bean: jasyptStringEncryptor
 
-sentry:
-  dsn: ENC(pi9dhRdrLGyo+FkLZTpGiAnbqs2d202k9DRHF7P+kzv+nRCItoIpqQ126nuh65ZS41Pcu9IdIZ2xDFzSpn3kInFVRY+J00Q6mIbrel9c4TJq3735uZ7n+d4+fmKx2DDv8DGy18scBq4=)
-  traces-sample-rate: 1.0 # 전송할 트랜잭션의 양 1 = 100%
-  logging:
-    minimum-event-level: info # 최소 이벤트 레벨
-    minimum-breadcrumb-level: info # 최소 브래드크럼 레벨
+---
+spring:
+  config:
+    activate:
+      on-profile: dev
+
+logging:
+  config: classpath:logback-dev.xml
+  discord:
+    webhook-uri: https://discord.com/api/webhooks/1254394407206125568/7yvFd17WWaMmLLRyvGiagz687wo_QDCPC419w4xLaZS9Ul8ERZ-LZz9PkCrAHb0C4Ssy
+  pattern:
+    console: "%d{HH:mm:ss} [%thread] [%-5level] %logger{36} - %msg%n"
+
+---
+
+spring:
+  config:
+    activate:
+      on-profile: prod
+
+logging:
+  config: classpath:logback-prod.xml
+  discord:
+    webhook-uri: https://discord.com/api/webhooks/1254442633280098385/eNrxpTC3xpcNVQY4LaQXaBd2XTRTHK7lI_xjvc3mRg543q7WdkxeQhE-xhIXSRNdA13q
+  pattern:
+    console: "%d{HH:mm:ss} [%thread] [%-5level] %logger{36} - %msg%n"
