@@ -1,5 +1,6 @@
 package jungle.HandTris.presentation;
 
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import jungle.HandTris.application.service.MemberService;
 import jungle.HandTris.domain.Member;
@@ -41,5 +42,12 @@ public class AuthController {
         );
 
         return ResponseEnvelope.of(memberDetailResWithToken);
+    }
+
+    @GetMapping("/signout")
+    public ResponseEnvelope<String> signout(HttpServletRequest request) {
+        memberService.signout(request);
+
+        return ResponseEnvelope.of("Signout Successful");
     }
 }
