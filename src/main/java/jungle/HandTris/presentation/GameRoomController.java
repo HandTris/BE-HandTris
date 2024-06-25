@@ -22,14 +22,14 @@ public class GameRoomController {
     @GetMapping
     public ResponseEnvelope<List<GameRoomDetailRes>> getGameRoomList() {
         List<GameRoomDetailRes> gameRoomDetailResList = gameRoomService.getGameRoomList().stream().map(GameRoomDetailRes::new).toList();
-        ResponseEnvelope<List<GameRoomDetailRes>> result = new ResponseEnvelope<>("200", gameRoomDetailResList, "성공입니다.");
+        ResponseEnvelope<List<GameRoomDetailRes>> result = ResponseEnvelope.of(gameRoomDetailResList);
         return result;
     }
 
     @PostMapping
     public ResponseEnvelope<UUID> createGameRoom(@Valid @RequestBody GameRoomDetailReq gameRoomDetailReq) {
         UUID gameUuid = gameRoomService.createGameRoom(gameRoomDetailReq);
-        ResponseEnvelope<UUID> result = new ResponseEnvelope<>("200", gameUuid, "성공입니다.");
+        ResponseEnvelope<UUID> result = ResponseEnvelope.of(gameUuid);
         return result;
     }
 
@@ -37,7 +37,7 @@ public class GameRoomController {
     public ResponseEnvelope<GameRoomDetailRes> enterGameRoom(@PathVariable("gameId") long gameId) {
         GameRoom gameRoom = gameRoomService.enterGameRoom(gameId);
         GameRoomDetailRes gameRoomDetailRes = new GameRoomDetailRes(gameRoom);
-        ResponseEnvelope<GameRoomDetailRes> result = new ResponseEnvelope<>("200", gameRoomDetailRes, "성공입니다.");
+        ResponseEnvelope<GameRoomDetailRes> result = ResponseEnvelope.of(gameRoomDetailRes);
         return result;
     }
 
@@ -45,14 +45,14 @@ public class GameRoomController {
     public ResponseEnvelope<GameRoomDetailRes> exitGameRoom(@PathVariable("gameId") long gameId) {
         GameRoom gameRoom = gameRoomService.exitGameRoom(gameId);
         GameRoomDetailRes gameRoomDetailRes = new GameRoomDetailRes(gameRoom);
-        ResponseEnvelope<GameRoomDetailRes> result = new ResponseEnvelope<>("200", gameRoomDetailRes, "성공입니다.");
+        ResponseEnvelope<GameRoomDetailRes> result = ResponseEnvelope.of(gameRoomDetailRes);
         return result;
     }
 
     @DeleteMapping("/{gameId}")
     public ResponseEnvelope<Long> deleteGameRoom(@PathVariable("gameId") long gameId) {
         gameRoomService.deleteGameRoom(gameId);
-        ResponseEnvelope<Long> result = new ResponseEnvelope<>("200", gameId, "성공입니다.");
+        ResponseEnvelope<Long> result = ResponseEnvelope.of(gameId);
         return result;
     }
 
