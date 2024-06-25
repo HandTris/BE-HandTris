@@ -45,13 +45,18 @@ public class GameRoomServiceImpl implements GameRoomService {
 
         gameRoom.enter();
         gameRoomRepository.save(gameRoom);
-        
+
         return gameRoom;
     }
 
     public GameRoom exitGameRoom(long gameId) {
         GameRoom gameRoom = gameRoomRepository.findById(gameId).orElseThrow(GameRoomNotFoundException::new);
+
+        if (gameRoom.getGameStatus() == GameStatus.PLAYING) {
+            throw new PlayingGameException();
+        }
         gameRoom.exit();
+        
         if (gameRoom.getParticipantCount() == 0) {
             deleteGameRoom(gameId);
             return gameRoom;

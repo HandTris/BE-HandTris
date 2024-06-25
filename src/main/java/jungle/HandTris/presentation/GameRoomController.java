@@ -42,10 +42,9 @@ public class GameRoomController {
     }
 
     @PostMapping("/{gameId}/exit")
-    public ResponseEnvelope<GameRoomDetailRes> exitGameRoom(@PathVariable("gameId") long gameId) {
+    public ResponseEnvelope<Long> exitGameRoom(@PathVariable("gameId") long gameId) {
         GameRoom gameRoom = gameRoomService.exitGameRoom(gameId);
-        GameRoomDetailRes gameRoomDetailRes = new GameRoomDetailRes(gameRoom);
-        ResponseEnvelope<GameRoomDetailRes> result = ResponseEnvelope.of(gameRoomDetailRes);
+        ResponseEnvelope<Long> result = ResponseEnvelope.of(gameId);
         return result;
     }
 
