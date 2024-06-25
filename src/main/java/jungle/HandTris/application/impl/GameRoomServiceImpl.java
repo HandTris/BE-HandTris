@@ -3,7 +3,10 @@ package jungle.HandTris.application.impl;
 import jakarta.transaction.Transactional;
 import jungle.HandTris.application.service.GameRoomService;
 import jungle.HandTris.domain.GameRoom;
+import jungle.HandTris.domain.GameStatus;
 import jungle.HandTris.domain.exception.GameRoomNotFoundException;
+import jungle.HandTris.domain.exception.ParticipantLimitedException;
+import jungle.HandTris.domain.exception.PlayingGameException;
 import jungle.HandTris.domain.repo.GameRoomRepository;
 import jungle.HandTris.presentation.dto.request.GameRoomDetailReq;
 import lombok.RequiredArgsConstructor;
@@ -31,8 +34,18 @@ public class GameRoomServiceImpl implements GameRoomService {
 
     public GameRoom enterGameRoom(long gameId) {
         GameRoom gameRoom = gameRoomRepository.findById(gameId).orElseThrow(GameRoomNotFoundException::new);
+
+        if (gameRoom.getGameStatus() == GameStatus.PLAYING) {
+            throw new PlayingGameException();
+        }
+
+        if (gameRoom.getParticipantCount() == gameRoom.getParticipantLimit()) {
+            throw new ParticipantLimitedException();
+        }
+
         gameRoom.enter();
         gameRoomRepository.save(gameRoom);
+        
         return gameRoom;
     }
 

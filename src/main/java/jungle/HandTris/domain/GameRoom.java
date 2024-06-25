@@ -1,7 +1,6 @@
 package jungle.HandTris.domain;
 
 import jakarta.persistence.*;
-import jungle.HandTris.domain.exception.ParticipantLimitedException;
 import jungle.HandTris.domain.exception.PlayingGameException;
 import jungle.HandTris.presentation.dto.request.GameRoomDetailReq;
 import lombok.AccessLevel;
@@ -42,15 +41,7 @@ public class GameRoom {
     }
 
     public void enter() {
-        if (gameStatus == GameStatus.PLAYING) {
-            throw new PlayingGameException();
-
-        } else if (participantLimit == participantCount) {
-            throw new ParticipantLimitedException();
-        } else {
-            this.participantCount++;
-            System.out.println("your in the game");
-        }
+        this.participantCount++;
     }
 
     public void exit() {
