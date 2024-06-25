@@ -38,4 +38,5 @@ out/
 
 ### DB ###
 db/*
-src/test/*
+src/test/resources/*
+src/test/java/jungle/HandTris/JasyptTest.java

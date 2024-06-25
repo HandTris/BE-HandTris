@@ -1,0 +1,13 @@
+spring:
+  jwt:
+    secret: ENC(PU1sudx/G+oeBctL3FHHaRiQy+rpqRjUGCKICeDFBYi7OqL5yyowKtayBHa/QiElf64wH6hLaXwXP67yZ5amsUTH/+FLFnVHUmWqgJb4L9D1Ud3WSk5PTk+47bAfWjyc7mvMjUhYUYE=)
+    access:
+      expiration: 3600000 # 1h
+      header: Authorization
+      subject: AccessToken
+    refresh:
+      expiration: 86400000 # 24h
+      header: Authorization-Refresh
+      subject: RefreshToken
+    issuer: Handtris
+    bearer: Bearer
