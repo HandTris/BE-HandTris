@@ -30,7 +30,9 @@ public enum ErrorCode {
     INVALID_CREDENTIALS(HttpStatus.UNAUTHORIZED, "비밀번호가 일치하지 않습니다.", Set.of(PasswordMismatchException.class)),
 
     TOKEN_NOT_PROVIDED(HttpStatus.UNAUTHORIZED, "토큰이 제공되지 않았습니다.", Set.of(TokenNotProvideException.class)),
-    INVALID_TOKEN_FORMAT(HttpStatus.UNAUTHORIZED, "잘못된 토큰 형식입니다.", Set.of(InvalidTokenFormatException.class));
+    INVALID_TOKEN_FORMAT(HttpStatus.UNAUTHORIZED, "잘못된 토큰 형식입니다.", Set.of(InvalidTokenFormatException.class)),
+    ACCESS_TOKEN_EXPIRED(HttpStatus.UNAUTHORIZED, "Access 토큰이 만료되었습니다.", Set.of(AccessTokenExpiredException.class)),
+    REFRESH_TOKEN_EXPIRED(HttpStatus.UNAUTHORIZED, "Refresh 토큰이 만료되었습니다.", Set.of(RefreshTokenExpiredException.class));
 
 
     private final HttpStatusCode status;
