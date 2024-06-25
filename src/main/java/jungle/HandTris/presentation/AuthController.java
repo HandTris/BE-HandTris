@@ -3,17 +3,12 @@ package jungle.HandTris.presentation;
 import jakarta.validation.Valid;
 import jungle.HandTris.application.service.MemberService;
 import jungle.HandTris.domain.Member;
-import jungle.HandTris.domain.repo.MemberRepository;
 import jungle.HandTris.global.dto.ResponseEnvelope;
-import jungle.HandTris.global.jwt.JWTUtil;
 import jungle.HandTris.presentation.dto.request.MemberRequest;
-import jungle.HandTris.presentation.dto.response.MemberDetailRes;
-import jungle.HandTris.presentation.dto.response.MemberIdDetails;
+import jungle.HandTris.presentation.dto.response.MemberDetailResWithToken;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.util.Pair;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -22,8 +17,6 @@ import org.springframework.web.bind.annotation.*;
 public class AuthController {
 
     private final MemberService memberService;
-    private final JWTUtil jwtUtil;
-    private final MemberRepository memberRepository;
 
     @PostMapping("/signup")
     @ResponseStatus(HttpStatus.CREATED)
@@ -34,18 +27,19 @@ public class AuthController {
     }
 
     @PostMapping("/signin")
-    public ResponseEntity<MemberDetailRes> signin(@RequestBody MemberRequest memberRequest) {
-        Pair<MemberDetailRes, String> result = memberService.signin(memberRequest);
+    public ResponseEnvelope<MemberDetailResWithToken> signin(@RequestBody MemberRequest memberRequest) {
+        Pair<Member, String> result = memberService.signin(memberRequest);
 
+        Member member = result.getFirst();
         String accessToken = result.getSecond();
-        String refreshToken = memberRepository.findByUsername(memberRequest.username()).getRefreshToken();
 
-        HttpHeaders headers = new HttpHeaders();
-        headers.add(jwtUtil.accessHeader, accessToken);
-        headers.add(jwtUtil.refreshHeader, refreshToken);
+        MemberDetailResWithToken memberDetailResWithToken = new MemberDetailResWithToken(
+                member.getUsername(),
+                member.getNickname(),
+                accessToken,
+                member.getRefreshToken()
+        );
 
-        return ResponseEntity.ok()
-                .headers(headers)
-                .body(result.getFirst());
+        return ResponseEnvelope.of(memberDetailResWithToken);
     }
 }
