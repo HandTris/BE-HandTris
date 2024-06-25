@@ -22,7 +22,7 @@ public enum ErrorCode {
     LIMITED_PARTICIPANT(HttpStatus.BAD_REQUEST, "인원이 꽉 찼습니다.", Set.of(ParticipantLimitedException.class)),
     GAME_ROOM_NOT_FOUND(HttpStatus.BAD_REQUEST, "게임이 존재하지 않습니다.", Set.of(GameRoomNotFoundException.class)),
     MEMBER_NOT_FOUND(HttpStatus.BAD_REQUEST, "유저가 존재하지 않습니다.", Set.of(MemberNotFoundException.class)),
-    MEMBER_RECORD_NOT_FOUND(HttpStatus.BAD_REQUEST, "전적이 존재하지 않습니다.", Set.of(MemberRecordNodFoundException.class)),
+    MEMBER_RECORD_NOT_FOUND(HttpStatus.BAD_REQUEST, "전적이 존재하지 않습니다.", Set.of(MemberRecordNotFoundException.class)),
 
     DUPLICATE_NICKNAME(HttpStatus.BAD_REQUEST, "이미 존재하는 닉네임 입니다.", Set.of(DuplicateNicknameException.class)),
     DUPLICATE_USERNAME(HttpStatus.BAD_REQUEST, "이미 존재하는 ID 입니다.", Set.of(DuplicateUsernameException.class)),
