@@ -1,4 +1,13 @@
 package jungle.HandTris.global.discord.model;
 
-public record Field(String name, String value, String inline) {
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
+
+@Getter
+@RequiredArgsConstructor
+public class Field {
+
+    private final String name;
+    private final String value;
+    private final boolean inline;
 }

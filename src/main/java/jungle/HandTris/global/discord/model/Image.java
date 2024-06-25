@@ -1,4 +1,11 @@
 package jungle.HandTris.global.discord.model;
 
-public record Image(String url) {
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
+
+@Getter
+@RequiredArgsConstructor
+public class Image {
+
+    private final String url;
 }

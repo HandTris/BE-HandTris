@@ -1,5 +1,13 @@
 package jungle.HandTris.global.discord.model;
 
-public record Author(String name, String url, String iconUrl) {
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 
+@Getter
+@RequiredArgsConstructor
+public class Author {
+
+    private final String name;
+    private final String url;
+    private final String iconUrl;
 }

@@ -5,49 +5,24 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class EmbedObject {
-    /**
-     * <b>Discord Embed Message에 들어갈 Message 내용 List</b>
-     */
+
+
     private final List<Field> fields = new ArrayList<>();
 
-    /**
-     * <b>Discord Embed Message 제목</b>
-     */
     private String title;
 
-    /**
-     * <b>Discord Embed Message 상세 내용</b>
-     */
     private String description;
 
-    /**
-     * <b>Discord Embed Message URL 형식</b>
-     */
     private String url;
 
-    /**
-     * <b>Discord Embed Message 겉 색깔</b>
-     */
     private Color color;
 
-    /**
-     * <b>Discord Embed Message 바닥글</b>
-     */
     private Footer footer;
 
-    /**
-     * <b>Discord Embed Message 썸네일</b>
-     */
     private Thumbnail thumbnail;
 
-    /**
-     * <b>Discord Embed Message 사진</b>
-     */
     private Image image;
 
-    /**
-     * <b>Discord Embed Message 작성자</b>
-     */
     private Author author;
 
     public String getTitle() {
