@@ -49,12 +49,4 @@ public class GameRoomController {
         return result;
     }
 
-    @DeleteMapping("/{gameId}")
-    public ResponseEnvelope<Long> deleteGameRoom(@PathVariable("gameId") long gameId) {
-        gameRoomService.deleteGameRoom(gameId);
-        ResponseEnvelope<Long> result = ResponseEnvelope.of(gameId);
-        return result;
-    }
-
-
 }
