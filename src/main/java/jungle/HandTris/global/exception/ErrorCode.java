@@ -23,8 +23,9 @@ public enum ErrorCode {
     DUPLICATE_NICKNAME(HttpStatus.BAD_REQUEST, "이미 존재하는 닉네임 입니다.", Set.of(DuplicateNicknameException.class)),
     DUPLICATE_USERNAME(HttpStatus.BAD_REQUEST, "이미 존재하는 ID 입니다.", Set.of(DuplicateUsernameException.class)),
     USER_NOT_FOUND(HttpStatus.UNAUTHORIZED, "등록된 사용자가 없습니다.", Set.of(UserNotFoundException.class)),
-    INVALID_CREDENTIALS(HttpStatus.UNAUTHORIZED, "비밀번호가 일치하지 않습니다.", Set.of(PasswordMismatchException.class));
-
+    INVALID_CREDENTIALS(HttpStatus.UNAUTHORIZED, "비밀번호가 일치하지 않습니다.", Set.of(PasswordMismatchException.class)),
+    DISCORD_LOG_APPENDER(HttpStatus.INTERNAL_SERVER_ERROR, "디스코드 로그 전송에 실패하였습니다", Set.of(DiscordLogException.class)),
+    DISCORD_CONNECT(HttpStatus.INTERNAL_SERVER_ERROR, "디스코드 연결에 실패하였습니다", Set.of(DiscordException.class));
     private final HttpStatusCode status;
     private final String code;
     private final String message;
