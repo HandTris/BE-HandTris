@@ -3,7 +3,7 @@ spring:
     name: HandTris
   profiles:
     active:
-      - prod
+      - dev
     group:
       dev:
         - dev
@@ -11,6 +11,34 @@ spring:
       prod:
         - prod
         - jwt
+
+logging:
+  config: classpath:logback.xml
+
 jasypt:
   encryptor:
     bean: jasyptStringEncryptor
+
+
+---
+spring:
+  config:
+    activate:
+      on-profile: dev
+
+logging:
+  discord:
+    webhook-uri: ENC(72RkuYe4NpE5laMTVYb4eC5mkby6LvzBJVmvqKxlLxWzq9JwP0U4VIgHvWzpmuqHjh1egTiJxQE9kOqRw7XQG50SKYuVFvD6P3kFih74nYd12AtG4z4lsqe6viITEwrOGUDKKbzr78xG0c7FuRDGBI/bKH50XSdFNgbrO4g8YNc0BPPwrp7/lQ==)
+  pattern:
+    console: "%d{HH:mm:ss} [%thread] [%-5level] %logger{36} - %msg%n"
+---
+spring:
+  config:
+    activate:
+      on-profile: prod
+
+logging:
+  discord:
+    webhook-uri: ENC(9xkz6vYhtKgC6nJlUvTWNkxmtx4Q7nZQ6GUseAok3amPkgrN0ttSXtZwELBgJ/EVWweLcaJzUFQVBCMC8lNnjMvpXmfKnYaUjIzQfPcIirdsYt3S7n8rBctI5l6VZqmEjZc+av04G5IupbieOGlABgwbTBo5DNcnxhSRWWCXToS4o+n+3N42lQ==)
+  pattern:
+    console: "%d{HH:mm:ss} [%thread] [%-5level] %logger{36} - %msg%n"
