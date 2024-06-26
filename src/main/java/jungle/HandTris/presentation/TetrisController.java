@@ -2,7 +2,7 @@ package jungle.HandTris.presentation;
 
 import jungle.HandTris.application.service.MemberConnectionService;
 import jungle.HandTris.application.service.TetrisService;
-import jungle.HandTris.presentation.dto.request.TetrisMessageRequest;
+import jungle.HandTris.presentation.dto.request.TetrisMessageReq;
 import jungle.HandTris.presentation.dto.request.RoomStateReq;
 import jungle.HandTris.presentation.dto.response.RoomOwnerRes;
 import jungle.HandTris.presentation.dto.response.RoomStateRes;
@@ -27,7 +27,7 @@ public class TetrisController {
     private final TetrisService tetrisService;
 
     @MessageMapping("/tetris")
-    public void handleTetrisMessage(TetrisMessageRequest message) {
+    public void handleTetrisMessage(TetrisMessageReq message) {
         Set<String> connectedUsers = memberConnectionService.getAllUsers();
         connectedUsers.stream()
                 .filter(sessionId -> !sessionId.equals(message.sender()))
