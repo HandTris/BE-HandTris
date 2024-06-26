@@ -1,11 +1,9 @@
 package jungle.HandTris.application.impl;
 
+import jakarta.servlet.http.HttpServletRequest;
 import jungle.HandTris.application.service.MemberService;
 import jungle.HandTris.domain.Member;
-import jungle.HandTris.domain.exception.DuplicateNicknameException;
-import jungle.HandTris.domain.exception.DuplicateUsernameException;
-import jungle.HandTris.domain.exception.PasswordMismatchException;
-import jungle.HandTris.domain.exception.UserNotFoundException;
+import jungle.HandTris.domain.exception.*;
 import jungle.HandTris.domain.repo.MemberRepository;
 import jungle.HandTris.global.jwt.JWTUtil;
 import jungle.HandTris.presentation.dto.request.MemberRequest;
@@ -66,5 +64,19 @@ public class MemberServiceImpl implements MemberService {
         Member data = new Member(username, bCryptPasswordEncoder.encode(password), nickname);
 
         memberRepository.save(data);
+    }
+
+    @Transactional
+    public void signout(HttpServletRequest request) {
+        String accessToken = jwtUtil.resolveAccessToken(request);
+
+        if (jwtUtil.isExpired(accessToken)) {
+            throw new AccessTokenExpiredException();
+        }
+
+        String nickname = jwtUtil.getNickname(accessToken);
+
+        memberRepository.findByNickname(nickname)
+                .ifPresent(Member::deleteRefreshToken);
     }
 }

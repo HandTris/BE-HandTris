@@ -31,6 +31,9 @@ public enum ErrorCode {
 
     TOKEN_NOT_PROVIDED(HttpStatus.UNAUTHORIZED, "토큰이 제공되지 않았습니다.", Set.of(TokenNotProvideException.class)),
     INVALID_TOKEN_FORMAT(HttpStatus.UNAUTHORIZED, "잘못된 토큰 형식입니다.", Set.of(InvalidTokenFormatException.class)),
+    ACCESS_TOKEN_EXPIRED(HttpStatus.UNAUTHORIZED, "Access 토큰이 만료되었습니다.", Set.of(AccessTokenExpiredException.class)),
+    REFRESH_TOKEN_EXPIRED(HttpStatus.UNAUTHORIZED, "Refresh 토큰이 만료되었습니다.", Set.of(RefreshTokenExpiredException.class)),
+  
     DISCORD_LOG_APPENDER(HttpStatus.INTERNAL_SERVER_ERROR, "디스코드 로그 전송에 실패하였습니다", Set.of(DiscordLogException.class)),
     DISCORD_CONNECT(HttpStatus.INTERNAL_SERVER_ERROR, "디스코드 연결에 실패하였습니다", Set.of(DiscordException.class));
 

@@ -74,8 +74,7 @@ public class JWTUtil {
     public String createAccessToken(String nickname) {
         Date now = new Date();
 
-        return bearerPrefix + " " +
-                Jwts.builder()
+        return Jwts.builder()
                         .header()
                             .type("JWT")
                         .and()
@@ -92,8 +91,7 @@ public class JWTUtil {
     public String createRefreshToken() {
         Date now = new Date();
 
-        return bearerPrefix +" " +
-                Jwts.builder()
+        return Jwts.builder()
                         .header()
                             .type("JWT")
                         .and()
