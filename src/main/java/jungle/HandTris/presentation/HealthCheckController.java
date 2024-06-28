@@ -11,4 +11,9 @@ public class HealthCheckController {
     public ResponseEnvelope<String> pingpong() {
         return ResponseEnvelope.of("pong");
     }
+
+    @GetMapping("/test")
+    public ResponseEnvelope<String> test() {
+        return ResponseEnvelope.of("test");
+    }
 }
