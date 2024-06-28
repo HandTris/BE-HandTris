@@ -48,12 +48,16 @@ jobs:
         run: sudo docker pull ${{ secrets.DOCKERHUB_USERNAME }}/github-actions-demo
 
       - name: docker stop container
-        run: sudo docker stop $(sudo docker ps -q) 2>/dev/null || true
+        run: sudo docker stop handtris || true
+
+      - name: remove existing nohup.out file
+        run: sudo rm -f nohup.out # 기존 nohup.out 파일 삭제
 
       - name: docker run new container
-        run: sudo docker run --name handtris --restart unless-stopped -d -p 8080:8080 ${{ secrets.DOCKERHUB_USERNAME }}/github-actions-demo
-        env:
-          JASYPT_ENCRYPTOR_PASSWORD: ${{ secrets.JASYPT_ENCRYPTOR_PASSWORD }}
+        run: |
+          nohup sudo docker run --name handtris --rm -d -p 8080:8080 \
+            -e JASYPT_ENCRYPTOR_PASSWORD=${{ secrets.JASYPT_ENCRYPTOR_PASSWORD }} \
+            ${{ secrets.DOCKERHUB_USERNAME }}/github-actions-demo > nohup.out 2>&1 &
 
       - name: delete old docker image
         run: sudo docker system prune -f
