@@ -1,5 +1,7 @@
 package jungle.HandTris.webSocket;
 
+import jungle.HandTris.application.impl.MemberConnectionServiceImpl;
+import jungle.HandTris.application.impl.TetrisServiceImpl;
 import jungle.HandTris.application.service.MemberConnectionService;
 import jungle.HandTris.application.service.TetrisService;
 import jungle.HandTris.presentation.dto.response.RoomOwnerRes;
@@ -16,10 +18,10 @@ import static org.mockito.Mockito.when;
 class MockTetrisServiceTest {
 
     @InjectMocks
-    private TetrisService tetrisService;
+    private TetrisServiceImpl tetrisService;
 
     @Mock
-    private MemberConnectionService memberConnectionService;
+    private MemberConnectionServiceImpl memberConnectionService;
 
     @Test
     void checkRoomOwnerAndReady_singleUser() {

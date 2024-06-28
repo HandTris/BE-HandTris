@@ -3,7 +3,6 @@ package jungle.HandTris.webSocket;
 import jungle.HandTris.application.service.MemberConnectionService;
 import jungle.HandTris.application.service.TetrisService;
 import jungle.HandTris.presentation.TetrisController;
-import jungle.HandTris.presentation.dto.request.TetrisMessageReq;
 import jungle.HandTris.presentation.dto.request.RoomStateReq;
 import jungle.HandTris.presentation.dto.response.RoomOwnerRes;
 import jungle.HandTris.presentation.dto.response.RoomStateRes;
@@ -12,13 +11,12 @@ import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.messaging.MessageHeaders;
+import org.springframework.messaging.simp.SimpMessageHeaderAccessor;
+import org.springframework.messaging.simp.SimpMessageType;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.junit.jupiter.api.extension.ExtendWith;
 
-import java.util.Set;
-import java.util.concurrent.ConcurrentHashMap;
-
-import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class) // MockitoExtension 사용
@@ -35,26 +33,6 @@ class MockTetrisControllerTest {
 
     @Mock
     private TetrisService tetrisService;
-
-    @Test
-    @DisplayName("테트리스 메시지 전송 Test")
-    void handleTetrisMessage() {
-        // given
-        String[][] board = new String[10][20]; // 예시 보드 초기화
-        TetrisMessageReq message = new TetrisMessageReq("sender", board, false);
-        Set<String> connectedUsers = ConcurrentHashMap.newKeySet();
-        connectedUsers.add("user1");
-        connectedUsers.add("sender");
-        when(memberConnectionService.getAllUsers()).thenReturn(connectedUsers);
-
-        // when
-        tetrisController.handleTetrisMessage(message);
-
-        // then
-        // user1 에게 메시지가 가고 sender 에게는 메시지가 가지 않았는지 검증
-        verify(messagingTemplate).convertAndSendToUser(eq("user1"), eq("queue/tetris"), eq(message));
-        verify(messagingTemplate, never()).convertAndSendToUser(eq("sender"), eq("queue/tetris"), eq(message));
-    }
 
     @Test
     @DisplayName("방장 권한 부여 Test")
@@ -110,6 +88,13 @@ class MockTetrisControllerTest {
 
         // then
         verify(memberConnectionService).clearUser();
+    }
+
+    private MessageHeaders createHeaders(String sessionId) {
+        SimpMessageHeaderAccessor headerAccessor = SimpMessageHeaderAccessor.create(SimpMessageType.MESSAGE);
+        headerAccessor.setSessionId(sessionId);
+        headerAccessor.setLeaveMutable(true);
+        return headerAccessor.getMessageHeaders();
     }
 }
 

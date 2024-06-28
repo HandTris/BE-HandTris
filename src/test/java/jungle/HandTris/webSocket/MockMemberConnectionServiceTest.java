@@ -1,10 +1,13 @@
 package jungle.HandTris.webSocket;
 
+import jungle.HandTris.application.impl.MemberConnectionServiceImpl;
 import jungle.HandTris.application.service.MemberConnectionService;
 import jungle.HandTris.domain.exception.ConnectedMemberNotFoundException;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.springframework.boot.test.context.SpringBootTest;
 
 import java.util.Set;
 
@@ -14,6 +17,11 @@ import static org.junit.jupiter.api.Assertions.*;
 class MockMemberConnectionServiceTest {
 
     private MemberConnectionService memberConnectionService;
+
+    @BeforeEach
+    void setUp() {
+        memberConnectionService = new MemberConnectionServiceImpl();
+    }
 
     @Test
     void addUser() {
