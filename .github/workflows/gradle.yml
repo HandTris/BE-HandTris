@@ -51,7 +51,7 @@ jobs:
         run: sudo docker stop $(sudo docker ps -q) 2>/dev/null || true
 
       - name: docker run new container
-        run: sudo docker run --name handtris --rm -d -p 8080:8080 ${{ secrets.DOCKERHUB_USERNAME }}/github-actions-demo
+        run: sudo docker run --name handtris --restart unless-stopped -d -p 8080:8080 ${{ secrets.DOCKERHUB_USERNAME }}/github-actions-demo
         env:
           JASYPT_ENCRYPTOR_PASSWORD: ${{ secrets.JASYPT_ENCRYPTOR_PASSWORD }}
 
