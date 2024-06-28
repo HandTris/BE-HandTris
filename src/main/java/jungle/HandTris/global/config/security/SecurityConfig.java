@@ -1,5 +1,10 @@
 package jungle.HandTris.global.config.security;
 
+import jungle.HandTris.global.filter.JWTFilter;
+import jungle.HandTris.global.handler.JWTAccessDeniedHandler;
+import jungle.HandTris.global.handler.JWTAuthenticateDeniedHandler;
+import jungle.HandTris.global.jwt.JWTUtil;
+import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.Customizer;
@@ -8,6 +13,7 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
@@ -16,7 +22,12 @@ import java.util.Arrays;
 
 @Configuration
 @EnableWebSecurity
+@RequiredArgsConstructor
 public class SecurityConfig {
+
+    private final JWTUtil jwtUtil;
+    private final JWTAccessDeniedHandler jwtAccessDeniedHandler;
+    private final JWTAuthenticateDeniedHandler jwtAuthenticateDeniedHandler;
 
     @Bean
     public BCryptPasswordEncoder bCryptPasswordEncoder() {
@@ -37,10 +48,17 @@ public class SecurityConfig {
                 .authorizeHttpRequests((auth) -> auth
                         .anyRequest().permitAll()
                 )
+                .cors(Customizer.withDefaults()
+                )
                 .sessionManagement((session) -> session
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-                ).cors(Customizer.withDefaults()
-                );
+                )
+                .addFilterBefore(new JWTFilter(jwtUtil), UsernamePasswordAuthenticationFilter.class);
+
+        http.exceptionHandling(exceptionHandle -> {
+            exceptionHandle.accessDeniedHandler(jwtAccessDeniedHandler);
+            exceptionHandle.authenticationEntryPoint(jwtAuthenticateDeniedHandler);
+        });
 
         return http.build();
     }
