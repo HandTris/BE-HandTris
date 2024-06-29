@@ -1,11 +1,14 @@
 name: Java CI with Gradle
+
 on:
   push:
     branches: [ "dev" ]
   pull_request:
     branches: [ "dev" ]
+
 permissions:
   contents: read
+
 jobs:
   build-docker-image:
     runs-on: ubuntu-latest
@@ -31,14 +34,24 @@ jobs:
           password: ${{ secrets.DOCKERHUB_PASSWORD }}
       - name: docker Hub push
         run: docker push ${{ secrets.DOCKERHUB_USERNAME }}/github-actions-demo
-  run-docker-image-on-ec2:
+
+  clean-and-run-docker-image-on-ec2:
     needs: build-docker-image
     runs-on: self-hosted
     steps:
+      - name: docker login
+        run: echo ${{ secrets.DOCKERHUB_PASSWORD }} | sudo docker login -u ${{ secrets.DOCKERHUB_USERNAME }} --password-stdin
       - name: docker pull
         run: sudo docker pull ${{ secrets.DOCKERHUB_USERNAME }}/github-actions-demo
-      - name: docker stop container
-        run: sudo docker stop $(sudo docker ps -q) 2>/dev/null || true
+      - name: stop running containers
+        run: |
+          sudo docker stop $(sudo docker ps -q) || true
+      - name: remove unused containers
+        run: |
+          sudo docker container prune -f
+      - name: remove unused images
+        run: |
+          sudo docker image prune -a -f
       - name: docker run new container
         run: sudo docker run --name handtris --restart unless-stopped -d -p 8080:8080 ${{ secrets.DOCKERHUB_USERNAME }}/github-actions-demo
         env:
