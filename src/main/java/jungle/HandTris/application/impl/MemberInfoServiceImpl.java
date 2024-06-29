@@ -20,11 +20,7 @@ public class MemberInfoServiceImpl implements MemberInfoService {
 
     @Transactional
     public MemberDetailRes getMemberInfo(HttpServletRequest request) {
-        String accessToken = jwtUtil.resolveAccessToken(request);
-
-        if (jwtUtil.isExpired(accessToken)) {
-            throw new AccessTokenExpiredException();
-        }
+        String accessToken = request.getHeader("Authorization").substring(7);
 
         String nickname = jwtUtil.getNickname(accessToken);
 
