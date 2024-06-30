@@ -94,6 +94,22 @@ public class MemberInfoServiceImpl implements MemberInfoService {
 
         // 이미지가 존재하는 경우에만 업데이트
         if (profileImage != null && profileImage.getSize() > 0) {
+            System.out.println("profileImage 존재");
+            // 이미지 형식 검증 추가
+            String contentType = profileImage.getContentType();
+            if (contentType == null || !contentType.startsWith("image/")) {
+                throw new InvalidImageTypeException();
+            }
+
+            // 허용된 확장자 검증 추가
+            String originalFilename = profileImage.getOriginalFilename();
+            if (originalFilename == null) {
+                throw new InvalidImageTypeException();
+            }
+            String extension = originalFilename.substring(originalFilename.lastIndexOf(".") + 1).toLowerCase();
+            if (!extension.equals("png") && !extension.equals("jpg") && !extension.equals("jpeg")) {
+                throw new InvalidImageTypeException();
+            }
             try {
                 String uploadedImageUrl = s3UploaderService.upload(profileImage, "profile");
                 member.updateProfileImageUrl(uploadedImageUrl);
