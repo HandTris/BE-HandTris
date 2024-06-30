@@ -41,17 +41,18 @@ jobs:
     steps:
       - name: docker login
         run: echo ${{ secrets.DOCKERHUB_PASSWORD }} | sudo docker login -u ${{ secrets.DOCKERHUB_USERNAME }} --password-stdin
+      - name: stop running containers
+        run: sudo docker stop $(sudo docker ps -q) || true
+      - name: remove unused containers
+        run: sudo docker container prune -f
+      - name: remove unused images
+        run: sudo docker image prune -a -f
+      - name: remove unused volumes
+        run: sudo docker volume prune -f
+      - name: remove unused networks
+        run: sudo docker network prune -f
       - name: docker pull
         run: sudo docker pull ${{ secrets.DOCKERHUB_USERNAME }}/github-actions-demo
-      - name: stop running containers
-        run: |
-          sudo docker stop $(sudo docker ps -q) || true
-      - name: remove unused containers
-        run: |
-          sudo docker container prune -f
-      - name: remove unused images
-        run: |
-          sudo docker image prune -a -f
       - name: docker run new container
         run: sudo docker run --name handtris --restart unless-stopped -d -p 8080:8080 ${{ secrets.DOCKERHUB_USERNAME }}/github-actions-demo
         env:
