@@ -65,6 +65,10 @@ dependencies {
     implementation('com.github.napstr:logback-discord-appender:1.0.0')
     // https://mvnrepository.com/artifact/io.micrometer/micrometer-core
     implementation group: 'io.micrometer', name: 'micrometer-core', version: '1.12.1'
+
+    // redis
+    implementation 'org.springframework.boot:spring-boot-starter-data-redis:3.3.0'
+    implementation 'io.lettuce:lettuce-core:6.3.2.RELEASE'
 }
 
 tasks.named('test') {

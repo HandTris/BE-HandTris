@@ -8,6 +8,6 @@ public record GameRoomDetailReq(
         @ValidEnum(enumClass = GameCategory.class, message = "존재하지 않는 게임 카테고리입니다.")
         String gameCategory,
         @Min(2)
-        long participantLimit
+        int participantLimit
 ) {
 }
