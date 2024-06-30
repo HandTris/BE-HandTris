@@ -14,6 +14,6 @@ public class HealthCheckController {
 
     @GetMapping("/test")
     public ResponseEnvelope<String> test() {
-        return ResponseEnvelope.of("test!!!!!!!!!!!!");
+        return ResponseEnvelope.of("test");
     }
 }
