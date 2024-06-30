@@ -25,6 +25,7 @@ public enum ErrorCode {
     MEMBER_RECORD_NOT_FOUND(HttpStatus.BAD_REQUEST, "전적이 존재하지 않습니다.", Set.of(MemberRecordNotFoundException.class)),
 
     NICKNAME_NOT_CHANGED(HttpStatus.BAD_REQUEST, "현재 닉네임과 동일한 닉네임입니다.", Set.of(NicknameNotChangedException.class)),
+    INVALID_IMAGE_TYPE(HttpStatus.BAD_REQUEST, "지원하지 않는 타입입니다.", Set.of(InvalidImageTypeException.class)),
     IMAGE_UPLOAD_FAIL(HttpStatus.BAD_REQUEST, "이미지 업로드에 실패하였습니다", Set.of(ImageUploadException.class)),
     FILE_CONVERSION_FAIL(HttpStatus.INTERNAL_SERVER_ERROR, "MultipartFile -> File 변환에 실패했습니다", Set.of(FileConversionException.class)),
     DUPLICATE_NICKNAME(HttpStatus.BAD_REQUEST, "이미 존재하는 닉네임 입니다.", Set.of(DuplicateNicknameException.class)),
