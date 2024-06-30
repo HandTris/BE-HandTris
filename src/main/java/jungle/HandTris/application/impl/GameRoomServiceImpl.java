@@ -1,8 +1,8 @@
 package jungle.HandTris.application.impl;
 
 import jakarta.transaction.Transactional;
-import jungle.HandTris.application.service.GameMemberService;
 import jungle.HandTris.application.service.GameRoomService;
+import jungle.HandTris.domain.GameMember;
 import jungle.HandTris.domain.GameRoom;
 import jungle.HandTris.domain.GameStatus;
 import jungle.HandTris.domain.exception.GameRoomNotFoundException;
@@ -23,7 +23,7 @@ import java.util.stream.Collectors;
 public class GameRoomServiceImpl implements GameRoomService {
 
     private final RedisTemplate<String, GameRoom> redisTemplate;
-    private final GameMemberService gameMemberService;
+    private final RedisTemplate<String, GameMember> memberRedisTemplate;
     private static final String GAME_ROOM_KEY_PREFIX = "gameMember:";
 
     public List<GameRoom> getGameRoomList() {
@@ -33,14 +33,27 @@ public class GameRoomServiceImpl implements GameRoomService {
                 .collect(Collectors.toList());
     }
 
+    public GameRoom getGameRoom(String roomCode) {
+        String gameRoomKey = GAME_ROOM_KEY_PREFIX + roomCode;
+        GameRoom gameRoom = redisTemplate.opsForValue().get(gameRoomKey);
+
+        if (gameRoom == null) {
+            throw new GameRoomNotFoundException();
+        }
+
+        return gameRoom;
+    }
+
+    public GameMember getGameMember(String roomCode) {
+        String gameMemberKey = GAME_ROOM_KEY_PREFIX + roomCode;
+        return memberRedisTemplate.opsForValue().get(gameMemberKey);
+    }
+
     public UUID createGameRoom(GameRoomDetailReq gameRoomDetailReq) {
         GameRoom createdGameRoom = new GameRoom(gameRoomDetailReq);
         String gameRoomKey = GAME_ROOM_KEY_PREFIX + createdGameRoom.getUuid().toString();
 
         redisTemplate.opsForValue().set(gameRoomKey, createdGameRoom);
-
-        // Redis에 방Id와 유저Id 매핑 후 저장
-//        gameMemberService.addMemberToRoom(createdGameRoom.getUuid().toString(), "JWT에서 얻은 유저ID");
 
         return createdGameRoom.getUuid();
     }
@@ -64,9 +77,6 @@ public class GameRoomServiceImpl implements GameRoomService {
         gameRoom.enter();
         redisTemplate.opsForValue().set(gameRoomKey, gameRoom);
 
-        // Redis에 방Id와 유저Id 매핑 후 저장
-        gameMemberService.addMemberToRoom(gameRoom.getUuid().toString(), "JWT에서 얻은 유저ID");
-
         return gameRoom;
     }
 
@@ -82,9 +92,6 @@ public class GameRoomServiceImpl implements GameRoomService {
             throw new PlayingGameException();
         }
         gameRoom.exit();
-
-        // Redis에서 방Id와 매핑된 유저Id 제거
-        gameMemberService.removeMemberFromRoom(gameRoom.getUuid().toString(), "해당 유저Id");
 
         if (gameRoom.getParticipantCount() == 0) {
             deleteGameRoom(gameId);
@@ -102,8 +109,5 @@ public class GameRoomServiceImpl implements GameRoomService {
             throw new GameRoomNotFoundException();
         }
         redisTemplate.delete(gameRoomKey);
-
-        // Redis에서 방 삭제
-        gameMemberService.deleteRoom(gameRoom.getUuid().toString());
     }
 }

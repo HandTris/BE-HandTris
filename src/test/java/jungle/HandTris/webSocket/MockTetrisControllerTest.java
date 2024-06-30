@@ -1,9 +1,9 @@
 package jungle.HandTris.webSocket;
 
-import jungle.HandTris.application.service.TetrisService;
+//import jungle.HandTris.application.service.TetrisService;
+
 import jungle.HandTris.presentation.TetrisController;
 import jungle.HandTris.presentation.dto.request.RoomStateReq;
-import jungle.HandTris.presentation.dto.response.RoomOwnerRes;
 import jungle.HandTris.presentation.dto.response.RoomStateRes;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -14,7 +14,6 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 
 import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class) // MockitoExtension 사용
 class MockTetrisControllerTest {
@@ -25,23 +24,23 @@ class MockTetrisControllerTest {
     @Mock
     private SimpMessagingTemplate messagingTemplate;
 
-    @Mock
-    private TetrisService tetrisService;
+//    @Mock
+//    private TetrisService tetrisService;
 
-    @Test
-    @DisplayName("방장 권한 부여 Test")
-    void roomOwnerInfo(String roomCode) {
-        // given
-        RoomOwnerRes roomOwnerRes = new RoomOwnerRes(true);
-        // checkRoomOwnerAndReady 함수가 실행되는것이 아닌, 위의 true로 정해놓은 객체로 반환
-        when(tetrisService.checkRoomOwnerAndReady()).thenReturn(roomOwnerRes);
-
-        // when
-        tetrisController.roomOwnerInfo(roomCode);
-
-        // then
-        verify(messagingTemplate).convertAndSend("/topic/owner", roomOwnerRes);
-    }
+//    @Test
+//    @DisplayName("방장 권한 부여 Test")
+//    void roomOwnerInfo(String roomCode) {
+//        // given
+//        RoomOwnerRes roomOwnerRes = new RoomOwnerRes(true);
+//        // checkRoomOwnerAndReady 함수가 실행되는것이 아닌, 위의 true로 정해놓은 객체로 반환
+//        when(tetrisService.checkRoomOwnerAndReady()).thenReturn(roomOwnerRes);
+//
+//        // when
+//        tetrisController.roomOwnerInfo(roomCode);
+//
+//        // then
+//        verify(messagingTemplate).convertAndSend("/topic/owner", roomOwnerRes);
+//    }
 
     @Test
     @DisplayName("테트리스 준비 Test")

@@ -20,9 +20,9 @@ public class GameRoom {
     @Enumerated(value = EnumType.STRING)
     private GameCategory gameCategory;
 
-    private long participantCount;
+    private int participantCount;
 
-    private long participantLimit;
+    private int participantLimit;
 
     @Column(nullable = false)
     private UUID uuid;
