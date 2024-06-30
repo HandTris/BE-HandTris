@@ -44,8 +44,6 @@ public class GameRoomServiceImpl implements GameRoomService {
         }
 
         gameRoom.enter();
-        gameRoomRepository.save(gameRoom);
-
         return gameRoom;
     }
 
@@ -56,17 +54,11 @@ public class GameRoomServiceImpl implements GameRoomService {
             throw new PlayingGameException();
         }
         gameRoom.exit();
-        
+
         if (gameRoom.getParticipantCount() == 0) {
-            deleteGameRoom(gameId);
+            gameRoomRepository.delete(gameRoom);
             return gameRoom;
         }
-        gameRoomRepository.save(gameRoom);
         return gameRoom;
-    }
-
-    public void deleteGameRoom(long gameId) {
-        GameRoom gameRoom = gameRoomRepository.findById(gameId).orElseThrow(GameRoomNotFoundException::new);
-        gameRoomRepository.delete(gameRoom);
     }
 }
