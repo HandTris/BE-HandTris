@@ -31,14 +31,12 @@ public class S3UploaderServiceImpl implements S3UploaderService {
 
     // MultipartFile을 전달받아 File로 전환한 후 S3에 업로드
     public String upload(MultipartFile multipartFile, String dirName) throws IOException {
-        System.out.println("public upload");
         File uploadFile = convert(multipartFile)
                 .orElseThrow(() -> new FileConversionException());
         return upload(uploadFile, dirName);
     }
 
     private String upload(File uploadFile, String dirName) {
-        System.out.println("private upload");
         String fileName = dirName + "/" + changedImageName(uploadFile.getName());
         String uploadImageUrl = putS3(uploadFile, fileName);
         removeNewFile(uploadFile); // 로컬에 생성된 File 삭제 (MultipartFile -> File 전환 하며 로컬에 파일 생성됨)
@@ -48,12 +46,10 @@ public class S3UploaderServiceImpl implements S3UploaderService {
 
     // 실질적인 s3 업로드 부분
     private String putS3(File uploadFile, String fileName) {
-        System.out.println("putS3");
         amazonS3.putObject(
                 new PutObjectRequest(bucket, fileName, uploadFile)
                         .withCannedAcl(CannedAccessControlList.PublicRead) // PublicRead 권한으로 업로드
         );
-        System.out.println("Done");
         return amazonS3.getUrl(bucket, fileName).toString();
     }
 
@@ -66,7 +62,6 @@ public class S3UploaderServiceImpl implements S3UploaderService {
     }
 
     private Optional<File> convert(MultipartFile file) throws IOException {
-        System.out.println("convert");
         File convertFile = new File(file.getOriginalFilename());
         if (convertFile.createNewFile()) {
             try (FileOutputStream fos = new FileOutputStream(convertFile)) {
