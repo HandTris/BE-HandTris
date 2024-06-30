@@ -51,6 +51,8 @@ jobs:
         run: sudo docker volume prune -f
       - name: remove unused networks
         run: sudo docker network prune -f
+      - name: clean up system
+        run: sudo docker system prune -a -f --volumes
       - name: docker pull
         run: sudo docker pull ${{ secrets.DOCKERHUB_USERNAME }}/github-actions-demo
       - name: docker run new container
