@@ -56,6 +56,6 @@ jobs:
       - name: docker pull
         run: sudo docker pull ${{ secrets.DOCKERHUB_USERNAME }}/github-actions-demo
       - name: docker run new container
-        run: sudo docker run --name handtris --restart unless-stopped -d -p 8080:8080 ${{ secrets.DOCKERHUB_USERNAME }}/github-actions-demo
+        run: sudo docker run --name handtris --restart unless-stopped -d -p 8080:8080 -e JASYPT_ENCRYPTOR_PASSWORD=${{ secrets.JASYPT_ENCRYPTOR_PASSWORD }} ${{ secrets.DOCKERHUB_USERNAME }}/github-actions-demo
         env:
           JASYPT_ENCRYPTOR_PASSWORD: ${{ secrets.JASYPT_ENCRYPTOR_PASSWORD }}
