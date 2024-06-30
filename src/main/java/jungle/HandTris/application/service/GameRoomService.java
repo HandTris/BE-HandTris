@@ -15,5 +15,4 @@ public interface GameRoomService {
 
     GameRoom exitGameRoom(long gameId);
 
-    void deleteGameRoom(long gameId);
 }
