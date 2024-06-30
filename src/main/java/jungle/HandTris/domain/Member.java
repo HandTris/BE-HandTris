@@ -24,12 +24,23 @@ public class Member {
     private String nickname;
 
     @Column(length = 500)
+    private String profileImageUrl;
+
+    @Column(length = 500)
     private String refreshToken;
 
     public Member(String username, String password, String nickname) {
         this.username = username;
         this.password = password;
         this.nickname = nickname;
+    }
+
+    public void updateNickname(String nickname) {
+        this.nickname = nickname;
+    }
+
+    public void updateProfileImageUrl(String profileImageUrl) {
+        this.profileImageUrl = profileImageUrl;
     }
 
     public void updateRefreshToken(String refreshToken) {
