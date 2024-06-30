@@ -24,11 +24,15 @@ public enum ErrorCode {
     MEMBER_NOT_FOUND(HttpStatus.BAD_REQUEST, "유저가 존재하지 않습니다.", Set.of(MemberNotFoundException.class)),
     MEMBER_RECORD_NOT_FOUND(HttpStatus.BAD_REQUEST, "전적이 존재하지 않습니다.", Set.of(MemberRecordNotFoundException.class)),
 
+    NICKNAME_NOT_CHANGED(HttpStatus.BAD_REQUEST, "현재 닉네임과 동일한 닉네임입니다.", Set.of(NicknameNotChangedException.class)),
+    IMAGE_UPLOAD_FAIL(HttpStatus.BAD_REQUEST, "이미지 업로드에 실패하였습니다", Set.of(ImageUploadException.class)),
+    FILE_CONVERSION_FAIL(HttpStatus.INTERNAL_SERVER_ERROR, "MultipartFile -> File 변환에 실패했습니다", Set.of(FileConversionException.class)),
     DUPLICATE_NICKNAME(HttpStatus.BAD_REQUEST, "이미 존재하는 닉네임 입니다.", Set.of(DuplicateNicknameException.class)),
     DUPLICATE_USERNAME(HttpStatus.BAD_REQUEST, "이미 존재하는 ID 입니다.", Set.of(DuplicateUsernameException.class)),
     USER_NOT_FOUND(HttpStatus.UNAUTHORIZED, "등록된 사용자가 없습니다.", Set.of(UserNotFoundException.class)),
     INVALID_CREDENTIALS(HttpStatus.UNAUTHORIZED, "비밀번호가 일치하지 않습니다.", Set.of(PasswordMismatchException.class)),
 
+    UNAUTHORIZED_ACCESS(HttpStatus.FORBIDDEN, "로그인 정보를 다시 확인해 주십시오.", Set.of(UnauthorizedAccessException.class)),
     TOKEN_NOT_PROVIDED(HttpStatus.UNAUTHORIZED, "토큰이 제공되지 않았습니다.", Set.of(TokenNotProvideException.class)),
     INVALID_TOKEN_FORMAT(HttpStatus.UNAUTHORIZED, "잘못된 토큰 형식입니다.", Set.of(InvalidTokenFormatException.class)),
     ACCESS_TOKEN_EXPIRED(HttpStatus.UNAUTHORIZED, "Access 토큰이 만료되었습니다.", Set.of(AccessTokenExpiredException.class)),
