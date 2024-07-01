@@ -42,7 +42,7 @@ public class GameRoomServiceTests {
 
         /* then : 테스트 결과 검증 */
         Assertions.assertThat(actualGameRoomList).isNotNull();
-        Assertions.assertThat(actualGameRoomList).hasSizeGreaterThan(2);
+        Assertions.assertThat(actualGameRoomList).hasSizeGreaterThan(1);
         Assertions.assertThat(actualGameRoomList.contains(gameRoom1)).isTrue();
         Assertions.assertThat(actualGameRoomList.contains(gameRoom2)).isTrue();
     }

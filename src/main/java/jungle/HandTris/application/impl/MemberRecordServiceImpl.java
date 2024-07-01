@@ -8,6 +8,8 @@ import jungle.HandTris.domain.exception.MemberNotFoundException;
 import jungle.HandTris.domain.exception.MemberRecordNotFoundException;
 import jungle.HandTris.domain.repo.MemberRecordRepository;
 import jungle.HandTris.domain.repo.MemberRepository;
+import jungle.HandTris.presentation.dto.request.GameResult;
+import jungle.HandTris.presentation.dto.request.GameResultReq;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -32,5 +34,20 @@ public class MemberRecordServiceImpl implements MemberRecordService {
             throw new MemberRecordNotFoundException();
         }
         return memberRecord.get();
+    }
+
+    public MemberRecord updateMemberRecord(GameResultReq gameResultReq, String nickname) {
+        GameResult gameResult = GameResult.valueOf(GameResult.class, gameResultReq.gameResult());
+
+        // jwt로 정보 받아온 정보로 getMemberRecord 찾기
+        MemberRecord memberRecord = getMemberRecord(nickname);
+
+        // gameResult에 따라 업데이트
+        if (GameResult.valueOf(GameResult.class, gameResultReq.gameResult()).equals(GameResult.WIN)) {
+            memberRecord.win();
+        } else if (GameResult.valueOf(GameResult.class, gameResultReq.gameResult()).equals(GameResult.LOSE)) {
+            memberRecord.lose();
+        }
+        return memberRecord;
     }
 }

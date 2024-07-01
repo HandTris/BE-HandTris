@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.Getter;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.time.LocalTime;
 
 @Getter
@@ -25,5 +26,24 @@ public class MemberRecord {
     private BigDecimal rate;
 
     private LocalTime avgTime;
+
+    public void win() {
+        this.win++;
+        updateRate();
+    }
+
+    public void lose() {
+        this.lose++;
+        updateRate();
+    }
+
+    private void updateRate() {
+        if (this.win + this.lose == 0) {
+            this.rate = BigDecimal.ZERO;
+        } else {
+            this.rate = BigDecimal.valueOf((double) this.win / (this.win + this.lose) * 100)
+                    .setScale(2, RoundingMode.HALF_UP);
+        }
+    }
 
 }
