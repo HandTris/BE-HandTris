@@ -29,11 +29,11 @@ public class GameRoomServiceImpl implements GameRoomService {
     public UUID createGameRoom(GameRoomDetailReq gameRoomDetailReq) {
         GameRoom createdGameRoom = new GameRoom(gameRoomDetailReq);
         gameRoomRepository.save(createdGameRoom);
-        return createdGameRoom.getUuid();
+        return createdGameRoom.getRoomNumber();
     }
 
-    public GameRoom enterGameRoom(String gameUuid) {
-        GameRoom gameRoom = gameRoomRepository.findByUuid(UUID.fromString(gameUuid)).orElseThrow(GameRoomNotFoundException::new);
+    public GameRoom enterGameRoom(String roomNumber) {
+        GameRoom gameRoom = gameRoomRepository.findByUuid(UUID.fromString(roomNumber)).orElseThrow(GameRoomNotFoundException::new);
 
         if (gameRoom.getGameStatus() == GameStatus.PLAYING) {
             throw new PlayingGameException();
@@ -47,8 +47,8 @@ public class GameRoomServiceImpl implements GameRoomService {
         return gameRoom;
     }
 
-    public GameRoom exitGameRoom(String gameUuid) {
-        GameRoom gameRoom = gameRoomRepository.findByUuid(UUID.fromString(gameUuid)).orElseThrow(GameRoomNotFoundException::new);
+    public GameRoom exitGameRoom(String roomNumber) {
+        GameRoom gameRoom = gameRoomRepository.findByUuid(UUID.fromString(roomNumber)).orElseThrow(GameRoomNotFoundException::new);
 
         if (gameRoom.getGameStatus() == GameStatus.PLAYING) {
             throw new PlayingGameException();

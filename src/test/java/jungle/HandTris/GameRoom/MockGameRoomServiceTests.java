@@ -67,7 +67,7 @@ public class MockGameRoomServiceTests {
         GameRoomDetailReq gameRoomDetailReq = new @Valid GameRoomDetailReq("HANDTRIS", 3);
         GameRoom newgame = new GameRoom(gameRoomDetailReq);
         long beforeParticipantCount = newgame.getParticipantCount();
-        String gameUuid = newgame.getUuid().toString();
+        String gameUuid = newgame.getRoomNumber().toString();
         when(gameRoomRepository.findByUuid(UUID.fromString(gameUuid))).thenReturn(Optional.of(newgame));
 
         /* when : 실제 테스트 실행*/
@@ -93,7 +93,7 @@ public class MockGameRoomServiceTests {
         when(gameRoomRepository.findById(gameId)).thenReturn(Optional.of(newgame));
 
         /* when : 실제 테스트 실행 */
-        GameRoom exitedGameRoom = gameServiceImpl.exitGameRoom(newgame.getUuid().toString());
+        GameRoom exitedGameRoom = gameServiceImpl.exitGameRoom(newgame.getRoomNumber().toString());
 
         /* then : 테스트 결과 검증 */
         Assertions.assertThat(exitedGameRoom).isNotNull();

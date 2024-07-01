@@ -72,7 +72,7 @@ public class GameRoomServiceTests {
         GameRoom newgame = new GameRoom(gameRoomDetailReq);
         long beforeParticipantCount = newgame.getParticipantCount();
         gameRoomRepository.save(newgame);
-        String gameUuid = newgame.getUuid().toString();
+        String gameUuid = newgame.getRoomNumber().toString();
 
         /* when : 실제 테스트 실행 */
         GameRoom enteredGameRoom = gameServiceImpl.enterGameRoom(gameUuid);
@@ -94,7 +94,7 @@ public class GameRoomServiceTests {
         gameRoomRepository.save(newgame);
 
         /* when : 실제 테스트 실행 */
-        GameRoom exitedGameRoom = gameServiceImpl.exitGameRoom(newgame.getUuid().toString());
+        GameRoom exitedGameRoom = gameServiceImpl.exitGameRoom(newgame.getRoomNumber().toString());
 
         /* then : 테스트 결과 검증 */
         Assertions.assertThat(exitedGameRoom).isNotNull();
@@ -113,7 +113,7 @@ public class GameRoomServiceTests {
         gameRoomRepository.save(newgame);
 
         /* when : 실제 테스트 실행 */
-        GameRoom exitedGameRoom = gameServiceImpl.exitGameRoom(newgame.getUuid().toString());
+        GameRoom exitedGameRoom = gameServiceImpl.exitGameRoom(newgame.getRoomNumber().toString());
 
         /* then : 테스트 결과 검증 */
         // 삭제된 Game 검증

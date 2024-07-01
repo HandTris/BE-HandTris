@@ -25,7 +25,7 @@ public class GameRoom {
     private long participantLimit;
 
     @Column(nullable = false)
-    private UUID uuid;
+    private UUID roomNumber;
 
     @Column(nullable = false)
     @Enumerated(value = EnumType.STRING)
@@ -34,7 +34,7 @@ public class GameRoom {
     public GameRoom(GameRoomDetailReq gameRoomDetailReq) {
         this.gameCategory = GameCategory.valueOf(GameCategory.class, gameRoomDetailReq.gameCategory());
         this.participantLimit = gameRoomDetailReq.participantLimit();
-        this.uuid = UUID.randomUUID();
+        this.roomNumber = UUID.randomUUID();
         this.gameStatus = GameStatus.NON_PLAYING;
         this.participantCount = 1;
     }
