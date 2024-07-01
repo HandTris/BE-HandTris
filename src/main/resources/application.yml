@@ -1,4 +1,8 @@
 spring:
+  data:
+    redis:
+      host: ENC(SzlkL7DPmvISVZRCob2wd9Ol0c+nYhsIJ7vGJg8t+CfXVGJm0s4ckT7GWi1TiHlqzEFRieTR0lG3u3bb9HODXw==)
+      port: 6379
   application:
     name: HandTris
   profiles:
