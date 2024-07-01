@@ -62,6 +62,7 @@ public class MemberServiceImpl implements MemberService {
         String nickname = memberRequest.nickname();
 
         Member data = new Member(username, bCryptPasswordEncoder.encode(password), nickname);
+        data.updateProfileImageUrl("https://handtris.s3.ap-northeast-2.amazonaws.com/profile/defaultImage.png");
 
         memberRepository.save(data);
     }
