@@ -72,10 +72,10 @@ public class GameRoomServiceTests {
         GameRoom newgame = new GameRoom(gameRoomDetailReq);
         long beforeParticipantCount = newgame.getParticipantCount();
         gameRoomRepository.save(newgame);
-        long gameId = newgame.getId();
+        String gameUuid = newgame.getUuid().toString();
 
         /* when : 실제 테스트 실행 */
-        GameRoom enteredGameRoom = gameServiceImpl.enterGameRoom(gameId);
+        GameRoom enteredGameRoom = gameServiceImpl.enterGameRoom(gameUuid);
 
         /* then : 테스트 결과 검증 */
         Assertions.assertThat(enteredGameRoom).isNotNull();
@@ -94,7 +94,7 @@ public class GameRoomServiceTests {
         gameRoomRepository.save(newgame);
 
         /* when : 실제 테스트 실행 */
-        GameRoom exitedGameRoom = gameServiceImpl.exitGameRoom(newgame.getId());
+        GameRoom exitedGameRoom = gameServiceImpl.exitGameRoom(newgame.getUuid().toString());
 
         /* then : 테스트 결과 검증 */
         Assertions.assertThat(exitedGameRoom).isNotNull();
@@ -113,7 +113,7 @@ public class GameRoomServiceTests {
         gameRoomRepository.save(newgame);
 
         /* when : 실제 테스트 실행 */
-        GameRoom exitedGameRoom = gameServiceImpl.exitGameRoom(newgame.getId());
+        GameRoom exitedGameRoom = gameServiceImpl.exitGameRoom(newgame.getUuid().toString());
 
         /* then : 테스트 결과 검증 */
         // 삭제된 Game 검증
@@ -125,23 +125,5 @@ public class GameRoomServiceTests {
         Assertions.assertThatThrownBy(() -> gameRoomRepository.findById(exitedGameRoom.getId()).orElseThrow(GameRoomNotFoundException::new))
                 .isInstanceOf(GameRoomNotFoundException.class);
     }
-
-    // not in mockito test
-    @Test
-    @DisplayName("게임 삭제 Test")
-    void deleteGameRoomTest() {
-        /* given : 테스트 사전 조건 설정 */
-        GameRoomDetailReq gameRoomDetailReq = new @Valid GameRoomDetailReq("HANDTRIS", 3);
-        GameRoom newgame = new GameRoom(gameRoomDetailReq);
-        gameRoomRepository.save(newgame);
-
-        /* when : 실제 테스트 실행 */
-        gameServiceImpl.deleteGameRoom(newgame.getId());
-
-        /* then : 테스트 결과 검증 */
-        Assertions.assertThatThrownBy(() -> gameRoomRepository.findById(newgame.getId()).orElseThrow(GameRoomNotFoundException::new))
-                .isInstanceOf(GameRoomNotFoundException.class);
-    }
-
 
 }

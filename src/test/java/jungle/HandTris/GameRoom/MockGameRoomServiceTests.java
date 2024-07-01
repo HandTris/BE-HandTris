@@ -17,6 +17,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 import static org.mockito.Mockito.when;
 
@@ -66,11 +67,11 @@ public class MockGameRoomServiceTests {
         GameRoomDetailReq gameRoomDetailReq = new @Valid GameRoomDetailReq("HANDTRIS", 3);
         GameRoom newgame = new GameRoom(gameRoomDetailReq);
         long beforeParticipantCount = newgame.getParticipantCount();
-        long gameId = newgame.getId();
-        when(gameRoomRepository.findById(gameId)).thenReturn(Optional.of(newgame));
+        String gameUuid = newgame.getUuid().toString();
+        when(gameRoomRepository.findByUuid(UUID.fromString(gameUuid))).thenReturn(Optional.of(newgame));
 
         /* when : 실제 테스트 실행*/
-        GameRoom enteredGameRoom = gameServiceImpl.enterGameRoom(gameId);
+        GameRoom enteredGameRoom = gameServiceImpl.enterGameRoom(gameUuid);
 
         /* then : 테스트 결과 검증*/
         Assertions.assertThat(enteredGameRoom).isNotNull();
@@ -92,7 +93,7 @@ public class MockGameRoomServiceTests {
         when(gameRoomRepository.findById(gameId)).thenReturn(Optional.of(newgame));
 
         /* when : 실제 테스트 실행 */
-        GameRoom exitedGameRoom = gameServiceImpl.exitGameRoom(newgame.getId());
+        GameRoom exitedGameRoom = gameServiceImpl.exitGameRoom(newgame.getUuid().toString());
 
         /* then : 테스트 결과 검증 */
         Assertions.assertThat(exitedGameRoom).isNotNull();
