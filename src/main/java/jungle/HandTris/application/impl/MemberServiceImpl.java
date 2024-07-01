@@ -1,9 +1,12 @@
 package jungle.HandTris.application.impl;
 
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.transaction.Transactional;
 import jungle.HandTris.application.service.MemberService;
 import jungle.HandTris.domain.Member;
+import jungle.HandTris.domain.MemberRecord;
 import jungle.HandTris.domain.exception.*;
+import jungle.HandTris.domain.repo.MemberRecordRepository;
 import jungle.HandTris.domain.repo.MemberRepository;
 import jungle.HandTris.global.jwt.JWTUtil;
 import jungle.HandTris.presentation.dto.request.MemberRequest;
@@ -12,7 +15,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.util.Pair;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
-import jakarta.transaction.Transactional;
 
 import java.util.Optional;
 
@@ -21,6 +23,7 @@ import java.util.Optional;
 @Transactional
 public class MemberServiceImpl implements MemberService {
     private final MemberRepository memberRepository;
+    private final MemberRecordRepository memberRecordRepository;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
     private final JWTUtil jwtUtil;
     @Value("${cloud.aws.s3.defaultImage}")
@@ -66,7 +69,8 @@ public class MemberServiceImpl implements MemberService {
         String nickname = memberRequest.nickname();
 
         Member data = new Member(username, bCryptPasswordEncoder.encode(password), nickname);
-        data.updateProfileImageUrl("https://handtris.s3.ap-northeast-2.amazonaws.com/profile/defaultImage.png");
+        data.updateProfileImageUrl(defaultImage);
+        MemberRecord memberRecord = new MemberRecord(data);
 
         memberRepository.save(data);
         memberRecordRepository.save(memberRecord);
