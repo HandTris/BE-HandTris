@@ -92,33 +92,42 @@ public class MemberInfoServiceImpl implements MemberInfoService {
             nicknameChanged = true;
         }
 
+        if (deleteProfileImage) {
+            member.updateProfileImageUrl("https://handtris.s3.ap-northeast-2.amazonaws.com/profile/defaultImage.png");
+        } else if (profileImage != null && profileImage.getSize() > 0) {
         // 이미지가 존재하는 경우에만 업데이트
-        if (profileImage != null && profileImage.getSize() > 0) {
-            // 이미지 형식 검증 추가
-            String contentType = profileImage.getContentType();
-            if (contentType == null || !contentType.startsWith("image/")) {
-                throw new InvalidImageTypeException();
-            }
-
-            // 허용된 확장자 검증 추가
-            String originalFilename = profileImage.getOriginalFilename();
-            if (originalFilename == null) {
-                throw new InvalidImageTypeException();
-            }
-            String extension = originalFilename.substring(originalFilename.lastIndexOf(".") + 1).toLowerCase();
-            if (!extension.equals("png") && !extension.equals("jpg") && !extension.equals("jpeg")) {
-                throw new InvalidImageTypeException();
-            }
-            try {
-                String uploadedImageUrl = s3UploaderService.upload(profileImage, "profile");
-                member.updateProfileImageUrl(uploadedImageUrl);
-            } catch (IOException e) {
-                throw new ImageUploadException();
-            }
+            validateImage(profileImage);
+            uploadImage(profileImage, member);
         }
 
         String accessToken = nicknameChanged ? jwtUtil.createAccessToken(member.getNickname()) : null;
 
         return new MemberInfoUpdateDetailsRes(member.getNickname(), member.getProfileImageUrl(), accessToken);
+    }
+
+    private void validateImage(MultipartFile profileImage) {
+        // 이미지 형식 검증 추가
+        String contentType = profileImage.getContentType();
+        if (contentType == null || !contentType.startsWith("image/")) {
+            throw new InvalidImageTypeException();
+        }
+        // 허용된 확장자 검증 추가
+        String originalFilename = profileImage.getOriginalFilename();
+        if (originalFilename == null) {
+            throw new InvalidImageTypeException();
+        }
+        String extension = originalFilename.substring(originalFilename.lastIndexOf(".") + 1).toLowerCase();
+        if (!extension.equals("png") && !extension.equals("jpg") && !extension.equals("jpeg")) {
+            throw new InvalidImageTypeException();
+        }
+    }
+
+    private void uploadImage(MultipartFile profileImage, Member member) {
+        try {
+            String uploadedImageUrl = s3UploaderService.upload(profileImage, "profile");
+            member.updateProfileImageUrl(uploadedImageUrl);
+        } catch (IOException e) {
+            throw new ImageUploadException();
+        }
     }
 }
