@@ -63,7 +63,7 @@ public class MemberInfoServiceImpl implements MemberInfoService {
 
 
     @Transactional
-    public MemberInfoUpdateDetailsRes updateInfo(HttpServletRequest request, MemberUpdateReq memberUpdateReq, MultipartFile profileImage, String username) {
+    public MemberInfoUpdateDetailsRes updateInfo(HttpServletRequest request, MemberUpdateReq memberUpdateReq, MultipartFile profileImage, Boolean deleteProfileImage, String username) {
 
         Boolean nicknameChanged = false;
         String token = jwtUtil.resolveAccessToken(request);

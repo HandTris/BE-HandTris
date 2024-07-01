@@ -31,9 +31,10 @@ public class MemberController {
             HttpServletRequest request,
             @Valid MemberUpdateReq memberUpdateReq,
             @RequestPart(value = "profileImage", required = false) MultipartFile profileImage,
+            @RequestParam(value = "deleteProfileImage", required = false, defaultValue = "false") boolean deleteProfileImage,
             @PathVariable("username") String username) {
 
-        MemberInfoUpdateDetailsRes updateMemberDetails = memberInfoService.updateInfo(request, memberUpdateReq, profileImage, username);
+        MemberInfoUpdateDetailsRes updateMemberDetails = memberInfoService.updateInfo(request, memberUpdateReq, profileImage, deleteProfileImage, username);
 
         return ResponseEnvelope.of(updateMemberDetails);
     }

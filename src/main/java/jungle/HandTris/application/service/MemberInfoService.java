@@ -14,5 +14,5 @@ public interface MemberInfoService {
 
     Pair<MemberInfoDetailsRes, MemberRecordDetailRes> myPage(HttpServletRequest request, String username);
 
-    MemberInfoUpdateDetailsRes updateInfo(HttpServletRequest request, MemberUpdateReq memberUpdateReq, MultipartFile profileImage, String username);
+    MemberInfoUpdateDetailsRes updateInfo(HttpServletRequest request, MemberUpdateReq memberUpdateReq, MultipartFile profileImage, Boolean deleteProfileImage, String username);
 }
