@@ -27,7 +27,7 @@ jobs:
         env:
           JASYPT_ENCRYPTOR_PASSWORD: ${{ secrets.JASYPT_ENCRYPTOR_PASSWORD }}
       - name: docker image build
-        run: docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/github-actions-demo .
+        run: docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/github-actions-demo -f docker/Dockerfile .
       - name: docker login
         uses: docker/login-action@v2
         with:
