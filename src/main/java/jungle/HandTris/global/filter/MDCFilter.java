@@ -3,6 +3,7 @@ package jungle.HandTris.global.filter;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jungle.HandTris.global.dto.WhiteListURI;
 import jungle.HandTris.global.util.HttpRequestUtil;
 import jungle.HandTris.global.util.MDCUtil;
 import lombok.RequiredArgsConstructor;
@@ -23,7 +24,12 @@ public class MDCFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) {
         System.out.println("MDCFilter is invoked");
-
+        for (String whiteListUri : WhiteListURI.WhiteListURI) {
+            if (request.getRequestURI().contains(whiteListUri)) {
+                filterChain.doFilter(request, response);
+                return;
+            }
+        }
         HttpServletRequest httpReq = WebUtils.getNativeRequest(request, HttpServletRequest.class);
 
         MDCUtil.setJsonValue(MDCUtil.REQUEST_URI_MDC, HttpRequestUtil.getRequestUri(Objects.requireNonNull(httpReq)));

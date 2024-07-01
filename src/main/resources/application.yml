@@ -15,9 +15,16 @@ spring:
       prod:
         - prod
         - jwt
+
 jasypt:
   encryptor:
     bean: jasyptStringEncryptor
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: prometheus
 
 ---
 spring:
@@ -31,6 +38,12 @@ logging:
     webhook-uri: https://discord.com/api/webhooks/1254394407206125568/7yvFd17WWaMmLLRyvGiagz687wo_QDCPC419w4xLaZS9Ul8ERZ-LZz9PkCrAHb0C4Ssy
   pattern:
     console: "%d{HH:mm:ss} [%thread] [%-5level] %logger{36} - %msg%n"
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: prometheus
 
 ---
 
