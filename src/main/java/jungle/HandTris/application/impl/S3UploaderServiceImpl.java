@@ -37,7 +37,7 @@ public class S3UploaderServiceImpl implements S3UploaderService {
     }
 
     private String upload(File uploadFile, String dirName) {
-        String fileName = dirName + "/" + changedImageName(uploadFile.getName());
+        String fileName = dirName + "/" + uploadFile.getName();
         String uploadImageUrl = putS3(uploadFile, fileName);
         removeNewFile(uploadFile); // 로컬에 생성된 File 삭제 (MultipartFile -> File 전환 하며 로컬에 파일 생성됨)
 
@@ -62,7 +62,8 @@ public class S3UploaderServiceImpl implements S3UploaderService {
     }
 
     private Optional<File> convert(MultipartFile file) throws IOException {
-        File convertFile = new File(file.getOriginalFilename());
+        String uniqueFilename = changedImageName(file.getOriginalFilename());
+        File convertFile = new File(uniqueFilename);
         if (convertFile.createNewFile()) {
             try (FileOutputStream fos = new FileOutputStream(convertFile)) {
                 fos.write(file.getBytes());
