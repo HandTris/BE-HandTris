@@ -18,6 +18,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.util.Pair;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.beans.factory.annotation.Value;
 
 import java.io.IOException;
 
@@ -30,6 +31,8 @@ public class MemberProfileServiceImpl implements MemberProfileService {
     private final MemberRepository memberRepository;
     private final MemberRecordService memberRecordService;
     private final S3UploaderService s3UploaderService;
+    @Value("${cloud.aws.s3.defaultImage}")
+    private String defaultImage;
 
     @Override
     public MemberDetailRes loadMemberProfileByToken(HttpServletRequest request) {
@@ -94,7 +97,7 @@ public class MemberProfileServiceImpl implements MemberProfileService {
         }
 
         if (deleteProfileImage) {
-            member.updateProfileImageUrl("https://handtris.s3.ap-northeast-2.amazonaws.com/profile/defaultImage.png");
+            member.updateProfileImageUrl(defaultImage);
         } else if (profileImage != null && profileImage.getSize() > 0) {
         // 이미지가 존재하는 경우에만 업데이트
             validateImage(profileImage);

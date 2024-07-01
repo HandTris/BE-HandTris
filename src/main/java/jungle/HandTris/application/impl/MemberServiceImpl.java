@@ -8,6 +8,7 @@ import jungle.HandTris.domain.repo.MemberRepository;
 import jungle.HandTris.global.jwt.JWTUtil;
 import jungle.HandTris.presentation.dto.request.MemberRequest;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.util.Pair;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -22,6 +23,8 @@ public class MemberServiceImpl implements MemberService {
     private final MemberRepository memberRepository;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
     private final JWTUtil jwtUtil;
+    @Value("${cloud.aws.s3.defaultImage}")
+    private String defaultImage;
 
     @Override
     public Pair<Member, String> signin (MemberRequest memberRequest) {
@@ -66,6 +69,7 @@ public class MemberServiceImpl implements MemberService {
         data.updateProfileImageUrl("https://handtris.s3.ap-northeast-2.amazonaws.com/profile/defaultImage.png");
 
         memberRepository.save(data);
+        memberRecordRepository.save(memberRecord);
     }
 
     @Override
