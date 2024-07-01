@@ -32,8 +32,8 @@ public class GameRoomServiceImpl implements GameRoomService {
         return createdGameRoom.getUuid();
     }
 
-    public GameRoom enterGameRoom(long gameId) {
-        GameRoom gameRoom = gameRoomRepository.findById(gameId).orElseThrow(GameRoomNotFoundException::new);
+    public GameRoom enterGameRoom(String gameUuid) {
+        GameRoom gameRoom = gameRoomRepository.findByUuid(UUID.fromString(gameUuid)).orElseThrow(GameRoomNotFoundException::new);
 
         if (gameRoom.getGameStatus() == GameStatus.PLAYING) {
             throw new PlayingGameException();
@@ -47,8 +47,8 @@ public class GameRoomServiceImpl implements GameRoomService {
         return gameRoom;
     }
 
-    public GameRoom exitGameRoom(long gameId) {
-        GameRoom gameRoom = gameRoomRepository.findById(gameId).orElseThrow(GameRoomNotFoundException::new);
+    public GameRoom exitGameRoom(String gameUuid) {
+        GameRoom gameRoom = gameRoomRepository.findByUuid(UUID.fromString(gameUuid)).orElseThrow(GameRoomNotFoundException::new);
 
         if (gameRoom.getGameStatus() == GameStatus.PLAYING) {
             throw new PlayingGameException();
