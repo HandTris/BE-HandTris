@@ -22,16 +22,19 @@ import java.util.UUID;
 public class GameRoomServiceImpl implements GameRoomService {
     private final GameRoomRepository gameRoomRepository;
 
+    @Override
     public List<GameRoom> getGameRoomList() {
         return gameRoomRepository.findAllByGameStatusNotPlaying();
     }
 
+    @Override
     public UUID createGameRoom(GameRoomDetailReq gameRoomDetailReq) {
         GameRoom createdGameRoom = new GameRoom(gameRoomDetailReq);
         gameRoomRepository.save(createdGameRoom);
         return createdGameRoom.getRoomNumber();
     }
 
+    @Override
     public GameRoom enterGameRoom(String roomNumber) {
         GameRoom gameRoom = gameRoomRepository.findByUuid(UUID.fromString(roomNumber)).orElseThrow(GameRoomNotFoundException::new);
 
@@ -47,6 +50,7 @@ public class GameRoomServiceImpl implements GameRoomService {
         return gameRoom;
     }
 
+    @Override
     public GameRoom exitGameRoom(String roomNumber) {
         GameRoom gameRoom = gameRoomRepository.findByUuid(UUID.fromString(roomNumber)).orElseThrow(GameRoomNotFoundException::new);
 
