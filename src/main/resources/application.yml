@@ -13,22 +13,14 @@ spring:
       dev:
         - dev
         - jwt
+        - S3
       prod:
         - prod
         - jwt
+        - S3
 jasypt:
   encryptor:
     bean: jasyptStringEncryptor
-
-cloud:
-  aws:
-    credentials:
-      accessKey:
-      secretKey:
-    region:
-     static: ap-northeast-2
-    s3:
-      bucketName: handtris
 
 ---
 spring:
