@@ -2,7 +2,7 @@ package jungle.HandTris.application.impl;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.transaction.Transactional;
-import jungle.HandTris.application.service.MemberInfoService;
+import jungle.HandTris.application.service.MemberProfileService;
 import jungle.HandTris.application.service.MemberRecordService;
 import jungle.HandTris.application.service.S3UploaderService;
 import jungle.HandTris.domain.Member;
@@ -11,8 +11,8 @@ import jungle.HandTris.domain.repo.MemberRepository;
 import jungle.HandTris.global.jwt.JWTUtil;
 import jungle.HandTris.presentation.dto.request.MemberUpdateReq;
 import jungle.HandTris.presentation.dto.response.MemberDetailRes;
-import jungle.HandTris.presentation.dto.response.MemberInfoDetailsRes;
-import jungle.HandTris.presentation.dto.response.MemberInfoUpdateDetailsRes;
+import jungle.HandTris.presentation.dto.response.MemberProfileDetailsRes;
+import jungle.HandTris.presentation.dto.response.MemberProfileUpdateDetailsRes;
 import jungle.HandTris.presentation.dto.response.MemberRecordDetailRes;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.util.Pair;
@@ -23,7 +23,7 @@ import java.io.IOException;
 
 @Service
 @RequiredArgsConstructor
-public class MemberInfoServiceImpl implements MemberInfoService {
+public class MemberProfileServiceImpl implements MemberProfileService {
 
     private final JWTUtil jwtUtil;
     private final MemberRepository memberRepository;
@@ -31,7 +31,7 @@ public class MemberInfoServiceImpl implements MemberInfoService {
     private final S3UploaderService s3UploaderService;
 
     @Transactional
-    public MemberDetailRes getMemberInfo(HttpServletRequest request) {
+    public MemberDetailRes loadMemberProfileByToken(HttpServletRequest request) {
         String accessToken = request.getHeader("Authorization").substring(7);
 
         String nickname = jwtUtil.getNickname(accessToken);
@@ -44,7 +44,7 @@ public class MemberInfoServiceImpl implements MemberInfoService {
     }
 
     @Transactional
-    public Pair<MemberInfoDetailsRes, MemberRecordDetailRes> myPage(HttpServletRequest request, String username) {
+    public Pair<MemberProfileDetailsRes, MemberRecordDetailRes> myPage(HttpServletRequest request, String username) {
         String token = jwtUtil.resolveAccessToken(request);
         String nickname = jwtUtil.getNickname(token);
         Member member = memberRepository.findByNickname(nickname)
@@ -55,7 +55,7 @@ public class MemberInfoServiceImpl implements MemberInfoService {
             throw new UnauthorizedAccessException();
         }
 
-        MemberInfoDetailsRes memberInfoDetails = new MemberInfoDetailsRes(member.getNickname(), member.getProfileImageUrl());
+        MemberProfileDetailsRes memberInfoDetails = new MemberProfileDetailsRes(member.getNickname(), member.getProfileImageUrl());
         MemberRecordDetailRes memberRecordDetails = new MemberRecordDetailRes(memberRecordService.getMemberRecord(member.getNickname()));
 
         return Pair.of(memberInfoDetails, memberRecordDetails);
@@ -63,7 +63,7 @@ public class MemberInfoServiceImpl implements MemberInfoService {
 
 
     @Transactional
-    public MemberInfoUpdateDetailsRes updateInfo(HttpServletRequest request, MemberUpdateReq memberUpdateReq, MultipartFile profileImage, Boolean deleteProfileImage, String username) {
+    public MemberProfileUpdateDetailsRes updateMemberProfile(HttpServletRequest request, MemberUpdateReq memberUpdateReq, MultipartFile profileImage, Boolean deleteProfileImage, String username) {
 
         Boolean nicknameChanged = false;
         String token = jwtUtil.resolveAccessToken(request);
@@ -102,7 +102,7 @@ public class MemberInfoServiceImpl implements MemberInfoService {
 
         String accessToken = nicknameChanged ? jwtUtil.createAccessToken(member.getNickname()) : null;
 
-        return new MemberInfoUpdateDetailsRes(member.getNickname(), member.getProfileImageUrl(), accessToken);
+        return new MemberProfileUpdateDetailsRes(member.getNickname(), member.getProfileImageUrl(), accessToken);
     }
 
     private void validateImage(MultipartFile profileImage) {
