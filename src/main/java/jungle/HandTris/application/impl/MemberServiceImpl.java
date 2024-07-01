@@ -17,12 +17,13 @@ import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
+@Transactional
 public class MemberServiceImpl implements MemberService {
     private final MemberRepository memberRepository;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
     private final JWTUtil jwtUtil;
 
-    @Transactional
+    @Override
     public Pair<Member, String> signin (MemberRequest memberRequest) {
         String username = memberRequest.username();
         String password = memberRequest.password();
@@ -44,7 +45,7 @@ public class MemberServiceImpl implements MemberService {
         return Pair.of(member, accessToken);
     }
 
-    @Transactional
+    @Override
     public void signup(MemberRequest memberRequest) {
         boolean usernameExists = memberRepository.existsByUsername(memberRequest.username());
         boolean nicknameExists = memberRepository.existsByNickname(memberRequest.nickname());
@@ -67,7 +68,7 @@ public class MemberServiceImpl implements MemberService {
         memberRepository.save(data);
     }
 
-    @Transactional
+    @Override
     public void signout(HttpServletRequest request) {
         String accessToken = jwtUtil.resolveAccessToken(request);
 

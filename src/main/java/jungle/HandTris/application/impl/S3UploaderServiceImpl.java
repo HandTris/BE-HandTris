@@ -30,6 +30,7 @@ public class S3UploaderServiceImpl implements S3UploaderService {
     private String bucket;
 
     // MultipartFile을 전달받아 File로 전환한 후 S3에 업로드
+    @Override
     public String upload(MultipartFile multipartFile, String dirName) throws IOException {
         File uploadFile = convert(multipartFile)
                 .orElseThrow(() -> new FileConversionException());

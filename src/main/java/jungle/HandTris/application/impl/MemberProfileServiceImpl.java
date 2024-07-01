@@ -23,6 +23,7 @@ import java.io.IOException;
 
 @Service
 @RequiredArgsConstructor
+@Transactional
 public class MemberProfileServiceImpl implements MemberProfileService {
 
     private final JWTUtil jwtUtil;
@@ -30,7 +31,7 @@ public class MemberProfileServiceImpl implements MemberProfileService {
     private final MemberRecordService memberRecordService;
     private final S3UploaderService s3UploaderService;
 
-    @Transactional
+    @Override
     public MemberDetailRes loadMemberProfileByToken(HttpServletRequest request) {
         String accessToken = request.getHeader("Authorization").substring(7);
 
@@ -43,7 +44,7 @@ public class MemberProfileServiceImpl implements MemberProfileService {
         return new MemberDetailRes(username, nickname);
     }
 
-    @Transactional
+    @Override
     public Pair<MemberProfileDetailsRes, MemberRecordDetailRes> myPage(HttpServletRequest request, String username) {
         String token = jwtUtil.resolveAccessToken(request);
         String nickname = jwtUtil.getNickname(token);
@@ -62,7 +63,7 @@ public class MemberProfileServiceImpl implements MemberProfileService {
     }
 
 
-    @Transactional
+    @Override
     public MemberProfileUpdateDetailsRes updateMemberProfile(HttpServletRequest request, MemberUpdateReq memberUpdateReq, MultipartFile profileImage, Boolean deleteProfileImage, String username) {
 
         Boolean nicknameChanged = false;
