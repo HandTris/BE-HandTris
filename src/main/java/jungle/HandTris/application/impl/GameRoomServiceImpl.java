@@ -36,7 +36,7 @@ public class GameRoomServiceImpl implements GameRoomService {
 
     @Override
     public GameRoom enterGameRoom(String roomNumber) {
-        GameRoom gameRoom = gameRoomRepository.findByUuid(UUID.fromString(roomNumber)).orElseThrow(GameRoomNotFoundException::new);
+        GameRoom gameRoom = gameRoomRepository.findByRoomNumber(UUID.fromString(roomNumber)).orElseThrow(GameRoomNotFoundException::new);
 
         if (gameRoom.getGameStatus() == GameStatus.PLAYING) {
             throw new PlayingGameException();
@@ -52,7 +52,7 @@ public class GameRoomServiceImpl implements GameRoomService {
 
     @Override
     public GameRoom exitGameRoom(String roomNumber) {
-        GameRoom gameRoom = gameRoomRepository.findByUuid(UUID.fromString(roomNumber)).orElseThrow(GameRoomNotFoundException::new);
+        GameRoom gameRoom = gameRoomRepository.findByRoomNumber(UUID.fromString(roomNumber)).orElseThrow(GameRoomNotFoundException::new);
 
         if (gameRoom.getGameStatus() == GameStatus.PLAYING) {
             throw new PlayingGameException();

@@ -19,6 +19,6 @@ public interface GameRoomRepository extends Repository<GameRoom, Long> {
 
     void delete(GameRoom gameRoom);
 
-    Optional<GameRoom> findByUuid(UUID gameUuid);
+    Optional<GameRoom> findByRoomNumber(UUID gameUuid);
 
 }

@@ -58,7 +58,7 @@ public class GameRoomServiceTests {
         UUID gameUuid = gameServiceImpl.createGameRoom(gameRoomDetailReq);
 
         /* then : 테스트 결과 검증 */
-        GameRoom createdGameRoom = gameRoomRepository.findByUuid(gameUuid).orElse(null);
+        GameRoom createdGameRoom = gameRoomRepository.findByRoomNumber(gameUuid).orElse(null);
         Assertions.assertThat(createdGameRoom).isNotNull();
         Assertions.assertThat(createdGameRoom.getGameCategory()).isEqualTo(GameCategory.HANDTRIS);
         Assertions.assertThat(createdGameRoom.getParticipantLimit()).isEqualTo(3);

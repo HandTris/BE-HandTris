@@ -68,7 +68,7 @@ public class MockGameRoomServiceTests {
         GameRoom newgame = new GameRoom(gameRoomDetailReq);
         long beforeParticipantCount = newgame.getParticipantCount();
         String gameUuid = newgame.getRoomNumber().toString();
-        when(gameRoomRepository.findByUuid(UUID.fromString(gameUuid))).thenReturn(Optional.of(newgame));
+        when(gameRoomRepository.findByRoomNumber(UUID.fromString(gameUuid))).thenReturn(Optional.of(newgame));
 
         /* when : 실제 테스트 실행*/
         GameRoom enteredGameRoom = gameServiceImpl.enterGameRoom(gameUuid);
