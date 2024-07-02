@@ -33,18 +33,18 @@ public class GameRoomController {
         return result;
     }
 
-    @PostMapping("/{gameId}/enter")
-    public ResponseEnvelope<GameRoomDetailRes> enterGameRoom(@PathVariable("gameId") long gameId) {
-        GameRoom gameRoom = gameRoomService.enterGameRoom(gameId);
+    @PostMapping("/{roomNumber}/enter")
+    public ResponseEnvelope<GameRoomDetailRes> enterGameRoom(@PathVariable("roomNumber") String roomNumber) {
+        GameRoom gameRoom = gameRoomService.enterGameRoom(roomNumber);
         GameRoomDetailRes gameRoomDetailRes = new GameRoomDetailRes(gameRoom);
         ResponseEnvelope<GameRoomDetailRes> result = ResponseEnvelope.of(gameRoomDetailRes);
         return result;
     }
 
-    @PostMapping("/{gameId}/exit")
-    public ResponseEnvelope<Long> exitGameRoom(@PathVariable("gameId") long gameId) {
-        GameRoom gameRoom = gameRoomService.exitGameRoom(gameId);
-        ResponseEnvelope<Long> result = ResponseEnvelope.of(gameId);
+    @PostMapping("/{roomNumber}/exit")
+    public ResponseEnvelope<String> exitGameRoom(@PathVariable("roomNumber") String roomNumber) {
+        GameRoom gameRoom = gameRoomService.exitGameRoom(roomNumber);
+        ResponseEnvelope<String> result = ResponseEnvelope.of(roomNumber);
         return result;
     }
 

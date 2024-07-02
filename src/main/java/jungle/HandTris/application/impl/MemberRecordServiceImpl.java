@@ -23,6 +23,7 @@ public class MemberRecordServiceImpl implements MemberRecordService {
     private final MemberRecordRepository memberRecordRepository;
     private final MemberRepository memberRepository;
 
+    @Override
     public MemberRecord getMemberRecord(String nickname) {
 
         Optional<Member> member = memberRepository.findByNickname(nickname);
@@ -36,6 +37,7 @@ public class MemberRecordServiceImpl implements MemberRecordService {
         return memberRecord.get();
     }
 
+    @Override
     public MemberRecord updateMemberRecord(GameResultReq gameResultReq, String nickname) {
         GameResult gameResult = GameResult.valueOf(GameResult.class, gameResultReq.gameResult());
 
