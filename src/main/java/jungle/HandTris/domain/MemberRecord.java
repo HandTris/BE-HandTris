@@ -16,7 +16,7 @@ public class MemberRecord {
     private long id;
 
     @OneToOne
-    @JoinColumn(name = "nickname", referencedColumnName = "nickname", nullable = false)
+    @JoinColumn(name = "member_id", referencedColumnName = "id", nullable = false)
     private Member member;
 
     private long win;
